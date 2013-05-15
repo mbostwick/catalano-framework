@@ -1,64 +1,142 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+// Catalano Imaging Library
+// The Catalano Framework
+//
+// Copyright © Diego Catalano, 2013
+// diego.catalano at live.com
+//
+//    This library is free software; you can redistribute it and/or
+//    modify it under the terms of the GNU Lesser General Public
+//    License as published by the Free Software Foundation; either
+//    version 2.1 of the License, or (at your option) any later version.
+//
+//    This library is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//    Lesser General Public License for more details.
+//
+//    You should have received a copy of the GNU Lesser General Public
+//    License along with this library; if not, write to the Free Software
+//    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+//
 
-// verificar numerador e denominador em ingles
 package Catalano.Imaging.Filters;
 
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.IBaseInPlace;
 /**
- *
+ * Mean Filter.
  * @author Diego Catalano
  */
 public class Mean implements IBaseInPlace{
     private int radius = 1;
-    public enum Arithmetic {Mean,Harmonic,ContraHarmonic,Geometry};
-    private Arithmetic arithmetic = Arithmetic.Mean;
-    private int orderFilter = 1;
 
-    public Mean() {
+    /**
+     * Common arithmetic for compute mean.
+     */
+    public enum Arithmetic {
+
+        /**
+         * Mean.
+         */
+        Mean,
         
-    }
+        /**
+         * Harmonic.
+         */
+        Harmonic,
+        
+        /**
+         * Contra Harmonic.
+         */
+        ContraHarmonic,
+        
+        /**
+         * Geometry.
+         */
+        Geometry
+    };
+    private Arithmetic arithmetic = Arithmetic.Mean;
+    private int order = 1;
 
+    /**
+     * Initialize a new instance of the Mean class.
+     */
+    public Mean() {}
+
+    /**
+     * Initialize a new instance of the Mean class.
+     * @param radius Radius.
+     */
     public Mean(int radius) {
         radius = radius < 1 ? 1 : radius;
         this.radius = radius;
     }
 
+    /**
+     * Initialize a new instance of the Mean class.
+     * @param arithmetic Mean.
+     */
     public Mean(Arithmetic arithmetic) {
         this.arithmetic = arithmetic;
     }
     
+    /**
+     * Initialize a new instance of the Mean class.
+     * @param radius Radius.
+     * @param arithmetic Mean.
+     */
     public Mean(int radius, Arithmetic arithmetic) {
         radius = radius < 1 ? 1 : radius;
         this.radius = radius;
         this.arithmetic = arithmetic;
     }
 
+    /**
+     * Get arithmetic.
+     * @return Mean.
+     */
     public Arithmetic getArithmetic() {
         return arithmetic;
     }
 
+    /**
+     * Set arithmetic.
+     * @param arithmetic Mean.
+     */
     public void setArithmetic(Arithmetic arithmetic) {
         this.arithmetic = arithmetic;
     }
 
+    /**
+     * Get radius.
+     * @return Radius.
+     */
     public int getRadius() {
         return radius;
     }
 
+    /**
+     * Set radius.
+     * @param radius Radus.
+     */
     public void setRadius(int radius) {
         this.radius = radius;
     }
 
-    public int getOrderFilter() {
-        return orderFilter;
+    /**
+     * Get order 
+     * @return Order.
+     */
+    public int getOrder() {
+        return order;
     }
 
-    public void setOrderFilter(int orderFilter) {
-        this.orderFilter = orderFilter;
+    /**
+     * Set order.
+     * @param order Order.
+     */
+    public void setOrder(int orderFilter) {
+        this.order = orderFilter;
     }
     
     @Override
@@ -70,7 +148,7 @@ public class Mean implements IBaseInPlace{
         int lines = CalcLines(radius);
         int c;
         
-        FastBitmap copy = new FastBitmap(fastBitmap.toBufferedImage());
+        FastBitmap copy = new FastBitmap(fastBitmap);
         
         switch(arithmetic){
             case Mean:
@@ -190,8 +268,8 @@ public class Mean implements IBaseInPlace{
                                 for (int j = 0; j < lines; j++) {
                                     Yline = y + (j-radius);
                                     if ((Xline >= 0) && (Xline < height) && (Yline >=0) && (Yline < width)) {
-                                        sumGrayOne += Math.pow((double)copy.getGray(Xline, Yline),orderFilter+1);
-                                        sumGrayTwo += Math.pow((double)copy.getGray(Xline, Yline),orderFilter);
+                                        sumGrayOne += Math.pow((double)copy.getGray(Xline, Yline),order+1);
+                                        sumGrayTwo += Math.pow((double)copy.getGray(Xline, Yline),order);
                                     }
                                 }
                             }
@@ -213,13 +291,13 @@ public class Mean implements IBaseInPlace{
                                 for (int j = 0; j < lines; j++) {
                                     Yline = y + (j-radius);
                                     if ((Xline >= 0) && (Xline < height) && (Yline >=0) && (Yline < width)) {
-                                        sumRone += Math.pow((double)copy.getRed(Xline, Yline),orderFilter+1);
-                                        sumGone += Math.pow((double)copy.getGreen(Xline, Yline),orderFilter+1);
-                                        sumBone += Math.pow((double)copy.getBlue(Xline, Yline),orderFilter+1);
+                                        sumRone += Math.pow((double)copy.getRed(Xline, Yline),order + 1);
+                                        sumGone += Math.pow((double)copy.getGreen(Xline, Yline),order + 1);
+                                        sumBone += Math.pow((double)copy.getBlue(Xline, Yline),order + 1);
                                         
-                                        sumRtwo += Math.pow((double)copy.getRed(Xline, Yline),orderFilter);
-                                        sumGtwo += Math.pow((double)copy.getGreen(Xline, Yline),orderFilter);
-                                        sumBtwo += Math.pow((double)copy.getBlue(Xline, Yline),orderFilter);
+                                        sumRtwo += Math.pow((double)copy.getRed(Xline, Yline),order);
+                                        sumGtwo += Math.pow((double)copy.getGreen(Xline, Yline),order);
+                                        sumBtwo += Math.pow((double)copy.getBlue(Xline, Yline),order);
                                     }
                                 }
                             }

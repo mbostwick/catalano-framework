@@ -24,7 +24,8 @@ package Catalano.Imaging.Tools;
 import Catalano.Imaging.FastBitmap;
 
 /**
- *
+ * Gray Level Coocurrence Matrix (GLCM).
+ * @see Haralick
  * @author Diego Catalano
  */
 public class GrayLevelCoocurrenceMatrix {
@@ -39,49 +40,97 @@ public class GrayLevelCoocurrenceMatrix {
     
     private int numPairs = 0;
 
+    /**
+     * Verify Automatic gray.
+     * @return True if need to find maximum gray in current image, otherwise is set 255.
+     */
     public boolean isAutoGray() {
         return autoGray;
     }
 
+    /**
+     * Set Automatic gray.
+     * @param autoGray True if need to find maximum gray in current image, otherwise is set 255.
+     */
     public void setAutoGray(boolean autoGray) {
         this.autoGray = autoGray;
     }
 
+    /**
+     * Verify if te GLCM is normalized.
+     * @return True if the GLCM is normalized, otherwise false.
+     */
     public boolean isNormalize() {
         return normalize;
     }
 
+    /**
+     * Set Normalize.
+     * @param normalize True for normalize the GLCM, otherwise false.
+     */
     public void setNormalize(boolean normalize) {
         this.normalize = normalize;
     }
 
+    /**
+     * Get Degree.
+     * @return Degree.
+     */
     public Degree getDegree() {
         return degree;
     }
 
+    /**
+     * Set Degree.
+     * @param degree Degree.
+     */
     public void setDegree(Degree degree) {
         this.degree = degree;
     }
     
+    /**
+     * Get Number of pairs.
+     * @return Number of pairs.
+     */
     public int getNumPairs() {
         return numPairs;
     }
     
+    /**
+     * Initialize a new instance of the GrayLevelCoocurrenceMatrix class.
+     * @param degree Indicates the direction where the coocurrence is found.
+     */
     public GrayLevelCoocurrenceMatrix(Degree degree){
         this.degree = degree;
     }
     
+    /**
+     * Initialize a new instance of the GrayLevelCoocurrenceMatrix class.
+     * @param degree Indicates the direction where the coocurrence is found.
+     * @param autoGray Determine the GLCM for 255 (false) or maximum gray found (true).
+     */
     public GrayLevelCoocurrenceMatrix(Degree degree, boolean autoGray){
         this.degree = degree;
         this.autoGray = autoGray;
     }
     
+    /**
+     * Initialize a new instance of the GrayLevelCoocurrenceMatrix class.
+     * @param degree Indicates the direction where the coocurrence is found.
+     * @param autoGray Determine the GLCM for 255 (false) or maximum gray found (true).
+     * @param normalize Normalize GLCM. Divides each element per number of pairs.
+     */
     public GrayLevelCoocurrenceMatrix(Degree degree, boolean autoGray, boolean normalize){
         this.degree = degree;
         this.autoGray = autoGray;
         this.normalize = normalize;
     }
     
+    /**
+     * Compute GLCM.
+     * @param fastBitmap Image to be processed.
+     * @return GLCM.
+     */
     public double[][] Compute(FastBitmap fastBitmap){
         
         int maxGray = 255;
@@ -133,6 +182,11 @@ public class GrayLevelCoocurrenceMatrix {
         
     }
     
+    /**
+     * Normalize GLCM.
+     * @param coocurrenceMatrix GLCM.
+     * @param numPairs Number of Pairs.
+     */
     private void Normalize(double[][] coocurrenceMatrix, int numPairs){
         for (int i = 0; i < coocurrenceMatrix.length; i++) {
             for (int j = 0; j < coocurrenceMatrix[0].length; j++) {
@@ -141,6 +195,11 @@ public class GrayLevelCoocurrenceMatrix {
         }
     }
     
+    /**
+     * Gets maximum gray in the image.
+     * @param fastBitmap Image to be processed.
+     * @return Max intensity.
+     */
     private int getMax(FastBitmap fastBitmap){
         int max = 0;
         for (int i = 0; i < fastBitmap.getHeight(); i++) {

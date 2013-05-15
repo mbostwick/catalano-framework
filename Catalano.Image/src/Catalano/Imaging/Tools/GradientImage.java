@@ -64,6 +64,9 @@ public class GradientImage {
         horizontalBitmap = new FastBitmap(fastBitmap);
         verticalBitmap = new FastBitmap(fastBitmap);
         
+        int width = fastBitmap.getWidth();
+        int height = fastBitmap.getHeight();
+        
         // Horizontal convolution
         Convolution c = new Convolution(h);
         c.applyInPlace(horizontalBitmap);
@@ -73,11 +76,11 @@ public class GradientImage {
         c.applyInPlace(verticalBitmap);
         
         // Compute gradients
-        magnitude = new float[fastBitmap.getHeight()][fastBitmap.getWidth()];
-        orientation = new float[fastBitmap.getHeight()][fastBitmap.getWidth()];
+        magnitude = new float[height][width];
+        orientation = new float[height][width];
         
-        for (int x = 0; x < fastBitmap.getHeight(); x++) {
-            for (int y = 0; y < fastBitmap.getWidth(); y++) {
+        for (int x = 0; x < height; x++) {
+            for (int y = 0; y < width; y++) {
                 double H = horizontalBitmap.getGray(x, y);
                 double V = verticalBitmap.getGray(x, y);
                 magnitude[x][y] = (float)Math.sqrt((H * H) + (V * V));

@@ -26,7 +26,7 @@ package Catalano.Imaging.Filters;
 
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.IBaseInPlace;
-import Catalano.Math.Gaussian;
+import Catalano.Math.Functions.Gaussian;
 
 /**
  * Gaussian blur filter.

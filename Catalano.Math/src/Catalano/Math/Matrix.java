@@ -374,6 +374,282 @@ public final class Matrix {
     }
     
     /**
+     * Get the maximum value from array.
+     * @param matrix Array.
+     * @return Maximum value.
+     */
+    public static double Max(double[] matrix){
+        double max = Integer.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            max = Math.max(max, matrix[i]);
+        }
+        return max;
+    }
+    
+    /**
+     * Get the maximum value from array.
+     * @param matrix Array.
+     * @return Maximum value.
+     */
+    public static double Max(double[][] matrix){
+        double max = Integer.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                max = Math.max(max, matrix[i][j]);
+            }
+        }
+        return max;
+    }
+    
+    /**
+     * Get the maximum value from array.
+     * @param matrix Array.
+     * @return Maximum value.
+     */
+    public static int Max(int[] matrix){
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            max = Math.max(max, matrix[i]);
+        }
+        return max;
+    }
+    
+    /**
+     * Get the maximum value from array.
+     * @param matrix Array.
+     * @return Maximum value.
+     */
+    public static int Max(int[][] matrix){
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                max = Math.max(max, matrix[i][j]);
+            }
+        }
+        return max;
+    }
+    
+    /**
+     * Get the maximum value from array.
+     * @param matrix Array.
+     * @return Maximum value.
+     */
+    public static float Max(float[] matrix){
+        float max = Integer.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            max = Math.max(max, matrix[i]);
+        }
+        return max;
+    }
+    
+    /**
+     * Get the maximum value from array.
+     * @param matrix Array.
+     * @return Maximum value.
+     */
+    public static float Max(float[][] matrix){
+        float max = Integer.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                max = Math.max(max, matrix[i][j]);
+            }
+        }
+        return max;
+    }
+    
+    /**
+     * Get the index of maximum value from array.
+     * @param matrix Array.
+     * @return Index.
+     */
+    public static int MaxIndex(double[] matrix){
+        int index = 0;
+        double max = Double.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            double currentValue = Math.max(max, matrix[i]);
+            if (currentValue > max){
+                max = currentValue;
+                index = i;
+            }
+        }
+        return index;
+    }
+    
+    /**
+     * Get the index of maximum value from array.
+     * @param matrix Array.
+     * @return Index.
+     */
+    public static int MaxIndex(int[] matrix){
+        int index = 0;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            int currentValue = Math.max(max, matrix[i]);
+            if (currentValue > max){
+                max = currentValue;
+                index = i;
+            }
+        }
+        return index;
+    }
+    
+    /**
+     * Get the index of maximum value from array.
+     * @param matrix Array.
+     * @return Index.
+     */
+    public static int MaxIndex(float[] matrix){
+        int index = 0;
+        float max = Float.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            float currentValue = Math.max(max, matrix[i]);
+            if (currentValue > max){
+                max = currentValue;
+                index = i;
+            }
+        }
+        return index;
+    }
+    
+    /**
+     * Get the minimum value from array.
+     * @param matrix Array.
+     * @return Minimum value.
+     */
+    public static double Min(double[] matrix){
+        double min = Integer.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            min = Math.min(min, matrix[i]);
+        }
+        return min;
+    }
+    
+    /**
+     * Get the minimum value from array.
+     * @param matrix Array.
+     * @return Minimum value.
+     */
+    public static double Min(double[][] matrix){
+        double min = Integer.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                min = Math.min(min, matrix[i][j]);
+            }
+        }
+        return min;
+    }
+    
+    /**
+     * Get the minimum value from array.
+     * @param matrix Array.
+     * @return Minimum value.
+     */
+    public static double Min(int[] matrix){
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            min = Math.min(min, matrix[i]);
+        }
+        return min;
+    }
+    
+    /**
+     * Get the minimum value from array.
+     * @param matrix Array.
+     * @return Minimum value.
+     */
+    public static int Min(int[][] matrix){
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                min = Math.min(min, matrix[i][j]);
+            }
+        }
+        return min;
+    }
+    
+    /**
+     * Get the minimum value from array.
+     * @param matrix Array.
+     * @return Minimum value.
+     */
+    public static double Min(float[] matrix){
+        float min = Integer.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            min = Math.min(min, matrix[i]);
+        }
+        return min;
+    }
+    
+    /**
+     * Get the minimum value from array.
+     * @param matrix Array.
+     * @return Minimum value.
+     */
+    public static float Min(float[][] matrix){
+        float min = Integer.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                min = Math.min(min, matrix[i][j]);
+            }
+        }
+        return min;
+    }
+    
+    /**
+     * Get the index of minimum value from array.
+     * @param matrix Matrix.
+     * @return Index.
+     */
+    public static int MinIndex(double[] matrix){
+        int index = 0;
+        double min = Double.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            double currentValue = Math.min(min, matrix[i]);
+            if (currentValue < min){
+                min = currentValue;
+                index = i;
+            }
+        }
+        return index;
+    }
+    
+    /**
+     * Get the index of minimum value from array.
+     * @param matrix Matrix.
+     * @return Index.
+     */
+    public static int MinIndex(int[] matrix){
+        int index = 0;
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            int currentValue = Math.min(min, matrix[i]);
+            if (currentValue < min){
+                min = currentValue;
+                index = i;
+            }
+        }
+        return index;
+    }
+    
+    /**
+     * Get the index of minimum value from array.
+     * @param matrix Matrix.
+     * @return Index.
+     */
+    public static int MinIndex(float[] matrix){
+        int index = 0;
+        float min = Float.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            float currentValue = Math.min(min, matrix[i]);
+            if (currentValue < min){
+                min = currentValue;
+                index = i;
+            }
+        }
+        return index;
+    }
+    
+    /**
      * Check if the matrix is square.
      * @param A Matrix.
      * @return Returns true if the matrix is square, otherwise returns false.

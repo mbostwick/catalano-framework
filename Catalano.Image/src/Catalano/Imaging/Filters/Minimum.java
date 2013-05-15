@@ -71,7 +71,7 @@ public class Minimum implements IBaseInPlace{
         int width = sourceImage.getWidth();
         int height = sourceImage.getHeight();
 
-        FastBitmap copy = new FastBitmap(sourceImage.toBufferedImage());
+        FastBitmap copy = new FastBitmap(sourceImage);
         int Xline,Yline;
         int lines = CalcLines(radius);
 

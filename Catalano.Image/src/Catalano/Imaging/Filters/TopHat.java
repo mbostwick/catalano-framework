@@ -76,7 +76,7 @@ public class TopHat implements IBaseInPlace{
         
         FastBitmap l = new FastBitmap(fastBitmap);
         
-        Opening open = new Opening(radius);
+        BinaryOpening open = new BinaryOpening(radius);
         open.applyInPlace(l);
         
         Subtract sub = new Subtract(l);
@@ -87,7 +87,7 @@ public class TopHat implements IBaseInPlace{
 
         FastBitmap l = new FastBitmap(fastBitmap);
         
-        Opening open = new Opening(se);
+        BinaryOpening open = new BinaryOpening(se);
         open.applyInPlace(l);
         
         Subtract sub = new Subtract(l);

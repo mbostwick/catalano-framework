@@ -119,4 +119,15 @@ public final class Tools {
     public static double Log(double a, double b){
         return Math.log(a) / Math.log(b);
     }
+    
+    /**
+     * Truncated power function.
+     * @param value Value.
+     * @param degree Degree.
+     * @return Result.
+     */
+    public static double TruncatedPower(double value, double degree){
+        double x = Math.pow(value, degree);
+        return (x > 0) ? x : 0.0;
+    }
 }

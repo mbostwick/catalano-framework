@@ -35,7 +35,7 @@ public class Haralick {
     /**
      * Compute energy.
      * @param coocurrenceMatrix Coocurrence matrix.
-     * @return Energy
+     * @return Energy.
      */
     public static double Energy(double[][] coocurrenceMatrix){
         double r = 0;

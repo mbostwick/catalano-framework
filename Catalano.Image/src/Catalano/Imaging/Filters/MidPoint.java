@@ -53,7 +53,7 @@ public class MidPoint implements IBaseInPlace{
         int width = fastBitmap.getWidth();
         int height = fastBitmap.getHeight();
             
-        FastBitmap copy = new FastBitmap(fastBitmap.toBufferedImage());
+        FastBitmap copy = new FastBitmap(fastBitmap);
         int Xline,Yline;
         int lines = CalcLines(radius);
 

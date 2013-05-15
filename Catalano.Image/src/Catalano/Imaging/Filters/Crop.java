@@ -85,7 +85,7 @@ public class Crop {
                 }
             }
 
-            fastBitmap.setImage(l.toBufferedImage());    
+            fastBitmap.setImage(l);    
         }
         else{
             int X,Y;
@@ -99,7 +99,7 @@ public class Crop {
                 }
             }
 
-            fastBitmap.setImage(l.toBufferedImage());
+            fastBitmap.setImage(l);
         }
     }
 }

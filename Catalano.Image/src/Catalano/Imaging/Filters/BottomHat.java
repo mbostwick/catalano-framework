@@ -76,26 +76,26 @@ public class BottomHat implements IBaseInPlace{
         
         FastBitmap l = new FastBitmap(fastBitmap);
         
-        Closing close = new Closing(radius);
+        BinaryClosing close = new BinaryClosing(radius);
         close.applyInPlace(l);
         
         Subtract sub = new Subtract(fastBitmap);
         sub.applyInPlace(l);
         
-        fastBitmap.setImage(l.toBufferedImage());
+        fastBitmap.setImage(l);
     }
     
     private void ApplyInPlace(FastBitmap fastBitmap, int[][] se){
 
-        FastBitmap l = new FastBitmap(fastBitmap.toBufferedImage());
+        FastBitmap l = new FastBitmap(fastBitmap);
         
-        Closing close = new Closing(se);
+        BinaryClosing close = new BinaryClosing(se);
         close.applyInPlace(l);
         
         Subtract sub = new Subtract(l);
         sub.applyInPlace(fastBitmap);
         
-        fastBitmap.setImage(l.toBufferedImage());
+        fastBitmap.setImage(l);
     }
     
 }

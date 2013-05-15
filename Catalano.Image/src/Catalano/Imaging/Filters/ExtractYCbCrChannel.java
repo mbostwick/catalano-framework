@@ -114,7 +114,7 @@ public class ExtractYCbCrChannel implements IBaseInPlace{
                     }
                 break;
             }
-            fastBitmap.setImage(l.toBufferedImage());
+            fastBitmap.setImage(l);
         }
     }    
 }

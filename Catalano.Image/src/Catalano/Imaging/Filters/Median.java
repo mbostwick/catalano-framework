@@ -67,7 +67,7 @@ public class Median implements IBaseInPlace{
         int maxArray = lines*lines;
         int c;
         
-        FastBitmap copy = new FastBitmap(fastBitmap.toBufferedImage());
+        FastBitmap copy = new FastBitmap(fastBitmap);
         
         if (fastBitmap.isGrayscale()) {
             int[] avgL = new int [maxArray];

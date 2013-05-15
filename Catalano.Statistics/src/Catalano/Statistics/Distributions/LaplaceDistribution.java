@@ -1,4 +1,4 @@
-// Catalano Math Library
+// Catalano Statistics Library
 // The Catalano Framework
 //
 // Copyright © Diego Catalano, 2013

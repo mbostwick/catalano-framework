@@ -56,7 +56,7 @@ public class AdaptiveContrastEnhancement implements IBaseInPlace {
         int height = fastBitmap.getHeight();
         int lines = CalcLines(windowSize);
         
-        FastBitmap copy = new FastBitmap(fastBitmap.toBufferedImage());
+        FastBitmap copy = new FastBitmap(fastBitmap);
         
         if (fastBitmap.isGrayscale()) {
             

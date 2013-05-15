@@ -95,7 +95,7 @@ public class GammaCorrection implements IBaseInPlace{
 
         }
 
-        fastBitmap.setImage(l.toBufferedImage());
+        fastBitmap.setImage(l);
  
 }
  

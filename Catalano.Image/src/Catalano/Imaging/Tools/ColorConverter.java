@@ -32,14 +32,24 @@ package Catalano.Imaging.Tools;
  * RGB -> YCoCg -> RGB
  * RGB -> XYZ -> RGB
  * RGB -> HunterLAB -> RGB
+ * RGB -> HLS -> RGB
+ * RGB -> CIE-LAB -> RGB
  * XYZ -> HunterLAB -> XYZ
+ * XYZ -> CIE-LAB -> XYZ
  * @author Diego Catalano
  */
 public class ColorConverter {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private ColorConverter() {}
     
     public static enum YCbCrColorSpace {ITU_BT_601,ITU_BT_709_HDTV};
     
-    //2o (CIE 1931)
+    // XYZ (Tristimulus) Reference values of a perfect reflecting diffuser
+    
+    //2o Observer (CIE 1931)
     // X2, Y2, Z2
     public static float[] CIE2_A = {109.850f, 100f, 35.585f}; //Incandescent
     public static float[] CIE2_C = {98.074f, 100f, 118.232f};
@@ -51,7 +61,7 @@ public class ColorConverter {
     public static float[] CIE2_F7 = {95.044f, 100f, 108.755f};
     public static float[] CIE2_F11 = {100.966f, 100f, 64.370f};
     
-    //10o (CIE 1964)
+    //10o Observer (CIE 1964)
     // X2, Y2, Z2
     public static float[] CIE10_A = {111.144f, 100f, 35.200f}; //Incandescent
     public static float[] CIE10_C = {97.285f, 100f, 116.145f};
@@ -344,6 +354,13 @@ public class ColorConverter {
         return rgb;
     }
     
+    /**
+     * RGB -> YCC.
+     * @param red Red coefficient. Values in the range [0..255].
+     * @param green Green coefficient. Values in the range [0..255].
+     * @param blue Blue coefficient. Values in the range [0..255].
+     * @return YCC color space. In the range [0..1].
+     */
     public static float[] RGBtoYCC(int red, int green, int blue){
         float[] ycc = new float[3];
         
@@ -362,6 +379,13 @@ public class ColorConverter {
         return ycc;
     }
     
+    /**
+     * YCC -> RGB.
+     * @param y Y coefficient.
+     * @param c1 C coefficient.
+     * @param c2 C coefficient.
+     * @return RGB color space.
+     */
     public static int[] YCCtoRGB(float y, float c1, float c2){
         int[] rgb = new int[3];
         
@@ -376,6 +400,13 @@ public class ColorConverter {
         return rgb;
     }
     
+    /**
+     * RGB -> YCoCg.
+     * @param red Red coefficient. Values in the range [0..255].
+     * @param green Green coefficient. Values in the range [0..255].
+     * @param blue Blue coefficient. Values in the range [0..255].
+     * @return YCoCg color space.
+     */
     public static float[] RGBtoYCoCg(int red, int green, int blue){
         float[] yCoCg = new float[3];
         
@@ -394,6 +425,13 @@ public class ColorConverter {
         return yCoCg;
     }
     
+    /**
+     * YCoCg -> RGB.
+     * @param y Pseudo luminance, or intensity.
+     * @param co Orange chrominance.
+     * @param cg Green chrominance.
+     * @return RGB color space.
+     */
     public static int[] YCoCgtoRGB(float y, float co, float cg){
         int[] rgb = new int[3];
         
@@ -408,12 +446,41 @@ public class ColorConverter {
         return rgb;
     }
     
+    /**
+     * RGB -> XYZ
+     * @param red Red coefficient. Values in the range [0..255].
+     * @param green Green coefficient. Values in the range [0..255].
+     * @param blue Blue coefficient. Values in the range [0..255].
+     * @return XYZ color space.
+     */
     public static float[] RGBtoXYZ(int red, int green, int blue){
         float[] xyz = new float[3];
         
         float r = red / 255f;
         float g = green / 255f;
         float b = blue / 255f;
+        
+        //R
+        if ( r > 0.04045)
+            r = (float)Math.pow(( ( r + 0.055f ) / 1.055f ), 2.4f);
+        else
+            r /= 12.92f;
+        
+        //G
+        if ( g > 0.04045)
+            g = (float)Math.pow(( ( g + 0.055f ) / 1.055f ), 2.4f);
+        else
+            g /= 12.92f;
+        
+        //B
+        if ( b > 0.04045)
+            b = (float)Math.pow(( ( b + 0.055f ) / 1.055f ), 2.4f);
+        else
+            b /= 12.92f;
+        
+        r *= 100;
+        g *= 100;
+        b *= 100;
         
         float x = 0.412453f * r + 0.35758f * g + 0.180423f * b;
         float y = 0.212671f * r + 0.71516f * g + 0.072169f * b;
@@ -426,12 +493,38 @@ public class ColorConverter {
         return xyz;
     }
     
+    /**
+     * XYZ -> RGB
+     * @param x X coefficient.
+     * @param y Y coefficient.
+     * @param z Z coefficient.
+     * @return RGB color space.
+     */
     public static int[] XYZtoRGB(float x, float y, float z){
         int[] rgb = new int[3];
+        
+        x /= 100;
+        y /= 100;
+        z /= 100;
         
         float r = 3.240479f * x - 1.53715f * y - 0.498535f * z;
         float g = -0.969256f * x + 1.875991f * y + 0.041556f * z;
         float b = 0.055648f * x - 0.204043f * y + 1.057311f * z;
+        
+        if ( r > 0.0031308 )
+            r = 1.055f * ( (float)Math.pow(r, 0.4166f) ) - 0.055f;
+        else
+            r = 12.92f * r;
+        
+        if ( g > 0.0031308 )
+            g = 1.055f * ( (float)Math.pow(g, 0.4166f) ) - 0.055f;
+        else
+            g = 12.92f * g;
+        
+        if ( b > 0.0031308 )
+            b = 1.055f * ( (float)Math.pow(b, 0.4166f) ) - 0.055f;
+        else
+            b = 12.92f * b;
         
         rgb[0] = (int)(r * 255);
         rgb[1] = (int)(g * 255);
@@ -440,6 +533,13 @@ public class ColorConverter {
         return rgb;
     }
     
+    /**
+     * XYZ -> HunterLAB
+     * @param x X coefficient.
+     * @param y Y coefficient.
+     * @param z Z coefficient.
+     * @return HunterLab coefficient.
+     */
     public static float[] XYZtoHunterLAB(float x, float y, float z){
         float[] hunter = new float[3];
         
@@ -457,6 +557,13 @@ public class ColorConverter {
         return hunter;
     }
     
+    /**
+     * HunterLAB -> XYZ
+     * @param l L coefficient.
+     * @param a A coefficient.
+     * @param b B coefficient.
+     * @return XYZ color space.
+     */
     public static float[] HunterLABtoXYZ(float l, float a, float b){
         float[] xyz = new float[3];
         
@@ -476,13 +583,228 @@ public class ColorConverter {
         return xyz;
     }
     
+    /**
+     * RGB -> HunterLAB.
+     * @param red Red coefficient. Values in the range [0..255].
+     * @param green Green coefficient. Values in the range [0..255].
+     * @param blue Blue coefficient. Values in the range [0..255].
+     * @return HunterLAB color space.
+     */
     public static float[] RGBtoHunterLAB(int red, int green, int blue){
         float[] xyz = RGBtoXYZ(red, green, blue);
         return XYZtoHunterLAB(xyz[0], xyz[1], xyz[2]);
     }
     
+    /**
+     * HunterLAB -> RGB.
+     * @param l L coefficient.
+     * @param a A coefficient.
+     * @param b B coefficient.
+     * @return RGB color space.
+     */
     public static int[] HunterLABtoRGB(float l, float a, float b){
         float[] xyz = HunterLABtoXYZ(l, a, b);
         return XYZtoRGB(xyz[0], xyz[1], xyz[2]);
+    }
+    
+    /**
+     * RGB -> HLS.
+     * @param red Red coefficient. Values in the range [0..255].
+     * @param green Green coefficient. Values in the range [0..255].
+     * @param blue Blue coefficient. Values in the range [0..255].
+     * @return HLS color space.
+     */
+    public static float[] RGBtoHLS(int red, int green, int blue){
+        float[] hsl = new float[3];
+        
+        float r = red / 255f;
+        float g = green / 255f;
+        float b = blue / 255f;
+        
+        float max = Math.max(r,Math.max(r,b));
+        float min = Math.min(r,Math.min(r,b));
+        float range = max - min;
+        
+        //Luminance
+        float l = (max + min) / 2;
+        
+        //Saturation
+        float s = 0;
+        if (0 < l && l < 1){
+            float d = (l <= 0.5f) ? l : (1 - l);
+            s = 0.5f * range / d;
+        }
+        
+        //Hue
+        float h = 0;
+        if (max > 0 && range > 0){
+            float rr = (float)(max - r) / range;
+            float gg = (float)(max - g) / range;
+            float bb = (float)(max - b) / range;
+            float hh;
+            if (r == max)
+                hh = bb - gg;
+            else if (g == max)
+                hh = rr - bb + 2.0f;
+            else
+                hh = gg - rr + 4.0f;
+            
+            if (hh < 0)
+                hh += 6;
+            
+            hh /= 6;
+        }
+        
+        hsl[0] = h;
+        hsl[1] = s;
+        hsl[2] = l;
+        
+        return hsl;
+    }
+    
+    /**
+     * HLS -> RGB.
+     * @param hue Hue.
+     * @param saturation Saturation.
+     * @param luminance Luminance.
+     * @return RGB color space.
+     */
+    public static int[] HSLtoRGB(float hue, float saturation, float luminance){
+        int[] rgb = new int[3];
+        float r = 0, g = 0, b = 0;
+        
+        if (luminance <= 0)
+            r = g = b = 0;
+        else if (luminance >= 1)
+            r = g = b = 1;
+        else{
+            float hh = (6 * hue) % 6;
+            int c1 = (int)hh;
+            float c2 = hh - c1;
+            float d = (luminance <= 0.5f) ? (saturation * luminance) : (saturation * (1 - luminance));
+            float w = luminance + d;
+            float x = luminance - d;
+            float y = w - (w - x) * c2;
+            float z = x + (w - x) * c2;
+            switch (c1){
+                case 0: r = w; g = z; b = x; break;
+                case 1: r = y; g = w; b = x; break;
+                case 2: r = x; g = w; b = z; break;
+                case 3: r = x; g = y; b = w; break;
+                case 4: r = z; g = x; b = w; break;
+                case 5: r = w; g = x; b = y; break;
+            }
+        }
+        
+        rgb[0] = (int)(r * 255);
+        rgb[1] = (int)(g * 255);
+        rgb[2] = (int)(b * 255);
+        
+        return rgb;
+    }
+    
+    /**
+     * RGB -> CIE-LAB.
+     * @param red Red coefficient. Values in the range [0..255].
+     * @param green Green coefficient. Values in the range [0..255].
+     * @param blue Blue coefficient. Values in the range [0..255].
+     * @param tristimulus XYZ Tristimulus.
+     * @return CIE-LAB color space.
+     */
+    public static float[] RGBtoLAB(int red, int green, int blue, float[] tristimulus){
+        float[] xyz = RGBtoXYZ(red, green, blue);
+        float[] lab = XYZtoLAB(xyz[0], xyz[1], xyz[2], tristimulus);
+        
+        return lab;
+    }
+    
+    /**
+     * CIE-LAB -> RGB.
+     * @param l L coefficient.
+     * @param a A coefficient.
+     * @param b B coefficient.
+     * @param tristimulus XYZ Tristimulus.
+     * @return RGB color space.
+     */
+    public static int[] LABtoRGB(float l, float a, float b, float[] tristimulus){
+        float[] xyz = LABtoXYZ(l, a, b, tristimulus);
+        return XYZtoRGB(xyz[0], xyz[1], xyz[2]);
+    }
+    
+    /**
+     * XYZ -> CIE-LAB.
+     * @param x X coefficient.
+     * @param y Y coefficient.
+     * @param z Z coefficient.
+     * @param tristimulus XYZ Tristimulus.
+     * @return CIE-LAB color space.
+     */
+    public static float[] XYZtoLAB(float x, float y, float z, float[] tristimulus){
+        float[] lab = new float[3];
+        
+        x /= tristimulus[0];
+        y /= tristimulus[1];
+        z /= tristimulus[2];
+        
+        if (x > 0.008856)
+            x = (float)Math.pow(x,0.33f);
+        else
+            x = (7.787f * x) + ( 0.1379310344827586f );
+        
+        if (y > 0.008856)
+            y = (float)Math.pow(y,0.33f);
+        else
+            y = (7.787f * y) + ( 0.1379310344827586f );
+        
+        if (z > 0.008856)
+            z = (float)Math.pow(z,0.33f);
+        else
+            z = (7.787f * z) + ( 0.1379310344827586f );
+        
+        lab[0] = ( 116 * y ) - 16;
+        lab[1] = 500 * ( x - y );
+        lab[2] = 200 * ( y - z );
+        
+        return lab;
+    }
+    
+    /**
+     * CIE-LAB -> XYZ.
+     * @param l L coefficient.
+     * @param a A coefficient.
+     * @param b B coefficient.
+     * @param tristimulus XYZ Tristimulus.
+     * @return XYZ color space.
+     */
+    public static float[] LABtoXYZ(float l, float a, float b, float[] tristimulus){
+        float[] xyz = new float[3];
+        
+        float y = ( l + 16f ) / 116f;
+        float x = a / 500f + y;
+        float z = y - b / 200f;
+        
+        //Y
+        if ( Math.pow(y,3) > 0.008856 )
+            y = (float)Math.pow(y,3);
+        else
+            y = (float)(( y - 16 / 116 ) / 7.787);
+        
+        //X
+        if ( Math.pow(x,3) > 0.008856 )
+            x = (float)Math.pow(x,3);
+        else
+            x = (float)(( x - 16 / 116 ) / 7.787);
+        
+        // Z
+        if ( Math.pow(z,3) > 0.008856 )
+            z = (float)Math.pow(z,3);
+        else
+            z = (float)(( z - 16 / 116 ) / 7.787);
+        
+        xyz[0] = x * tristimulus[0];
+        xyz[1] = y * tristimulus[1];
+        xyz[2] = z * tristimulus[2];
+        
+        return xyz;
     }
 }

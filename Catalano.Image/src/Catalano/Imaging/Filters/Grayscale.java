@@ -171,7 +171,7 @@ public class Grayscale implements IBaseInPlace{
                         l.setGray(x, y, (int)gray);
                     }
                 }
-                fastBitmap.setImage(l.toBufferedImage());
+                fastBitmap.setImage(l);
             }
             else{
                 Apply(fastBitmap, this.grayscaleMethod);
@@ -234,6 +234,6 @@ public class Grayscale implements IBaseInPlace{
                     }
                     break;
             }
-            fastBitmap.setImage(l.toBufferedImage());
+            fastBitmap.setImage(l);
     }   
 }

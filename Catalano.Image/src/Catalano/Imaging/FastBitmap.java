@@ -63,9 +63,7 @@ public class FastBitmap {
     /**
      * Initialize a new instance of the FastBitmap class.
      */
-    public FastBitmap() {
-        
-    }
+    public FastBitmap() {}
     
     /**
      * Initialize a new instance of the FastBitmap class.
@@ -160,11 +158,9 @@ public class FastBitmap {
      * @param image Array.
      */
     public FastBitmap(int[][] image){
-        int color = BufferedImage.TYPE_BYTE_GRAY;
-        bufferedImage = new BufferedImage(image[0].length, image.length, color);
+        bufferedImage = new BufferedImage(image[0].length, image.length, BufferedImage.TYPE_BYTE_GRAY);
         refresh();
         arrayToImage(image);
-        
     }
     
     /**
@@ -208,6 +204,15 @@ public class FastBitmap {
      */
     public void setImage(BufferedImage bufferedImage){
         this.bufferedImage = bufferedImage;
+        refresh();
+    }
+    
+    /**
+     * Set image to FastBitmap.
+     * @param bufferedImage BufferedImage.
+     */
+    public void setImage(FastBitmap fastBitmap){
+        this.bufferedImage = fastBitmap.toBufferedImage();
         refresh();
     }
     
@@ -281,6 +286,22 @@ public class FastBitmap {
     
     /**
      * Convert FastBitmap to Array.
+     * @param image Image.
+     */
+    public void toArrayGray(float[][] image){
+        
+        int height = getHeight();
+        int width = getWidth();
+        
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                image[i][j] = (float)getGray(i, j);
+            }
+        }
+    }
+    
+    /**
+     * Convert FastBitmap to Array.
      * @param image 
      */
     public void toArrayGray(double[][] image){
@@ -290,7 +311,7 @@ public class FastBitmap {
         
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                image[i][j] = getGray(i, j);
+                image[i][j] = (double)getGray(i, j);
             }
         }
     }
@@ -300,6 +321,24 @@ public class FastBitmap {
      * @param image Array.
      */
     public void toArrayRGB(int[][][] image){
+        
+        int height = getHeight();
+        int width = getWidth();
+        
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                image[i][j][0] = getRed(i, j);
+                image[i][j][1] = getGreen(i, j);
+                image[i][j][2] = getBlue(i, j);
+            }
+        }
+    }
+    
+    /**
+     * Convert FastBitmap to Array.
+     * @param image Array.
+     */
+    public void toArrayRGB(float[][][] image){
         
         int height = getHeight();
         int width = getWidth();
@@ -347,6 +386,18 @@ public class FastBitmap {
      * Convert Array to FastBitmap.
      * @param image Array.
      */
+    public void arrayToImage(float image[][]){
+        for (int x = 0; x < image.length; x++) {
+            for (int y = 0; y < image[0].length; y++) {
+                setGray(x, y, (int)image[x][y]);
+            }
+        }
+    }
+    
+    /**
+     * Convert Array to FastBitmap.
+     * @param image Array.
+     */
     public void arrayToImage(double image[][]){
         for (int x = 0; x < image.length; x++) {
             for (int y = 0; y < image[0].length; y++) {
@@ -363,6 +414,18 @@ public class FastBitmap {
         for (int x = 0; x < image.length; x++) {
             for (int y = 0; y < image[0].length; y++) {
                 setRGB(x, y, image[x][y][0], image[x][y][1], image[x][y][2]);
+            }
+        }
+    }
+    
+    /**
+     * Convert Array to FastBitmap.
+     * @param image Array.
+     */
+    public void arrayToImage(float image[][][]){
+        for (int x = 0; x < image.length; x++) {
+            for (int y = 0; y < image[0].length; y++) {
+                setRGB(x, y, (int)image[x][y][0], (int)image[x][y][1], (int)image[x][y][2]);
             }
         }
     }
@@ -449,6 +512,29 @@ public class FastBitmap {
     }
     
     /**
+     * Return RGB color.
+     * @param x X axis coordinate.
+     * @param y Y axis coordinate.
+     * @return RGB.
+     */
+    public int[] getRGB(int x, int y){
+        int[] rgb = new int[3];
+        rgb[0] = pixelsRGB[x*getWidth()+y] >> 16 & 0xFF;
+        rgb[1] = pixelsRGB[x*getWidth()+y] >> 8 & 0xFF;
+        rgb[2] = pixelsRGB[x*getWidth()+y] & 0xFF;
+        return rgb;
+    }
+    
+    /**
+     * Return RGB color.
+     * @param point Point.
+     * @return RGB.
+     */
+    public int[] getRGB(IntPoint point){
+        return getRGB(point.x, point.y);
+    }
+    
+    /**
      * Set RGB.
      * @param x X axis coordinates.
      * @param y Y axis coordinates.
@@ -482,13 +568,31 @@ public class FastBitmap {
     }
     
     /**
-     * Set Gray.
+     * Get Gray.
      * @param x X axis coordinate.
      * @param y Y axis coordinate.
+     * @return Gray channel's value.
+     */
+    public int getGray(IntPoint point){
+        return pixelsGRAY[point.x*getWidth()+point.y] < 0 ? pixelsGRAY[point.x*getWidth()+point.y] + 256 : pixelsGRAY[point.x*getWidth()+point.y];
+    }
+    
+    /**
+     * Set Gray.
+     * @param point IntPoint.
      * @param value Gray channel's value.
      */
     public void setGray(int x, int y, int value){
         pixelsGRAY[x*getWidth()+y] = (byte)value;
+    }
+    
+    /**
+     * Set Gray.
+     * @param point IntPoint.
+     * @param value Gray channel's value.
+     */
+    public void setGray(IntPoint point, int value){
+        pixelsGRAY[point.x*getWidth()+point.y] = (byte)value;
     }
     
     /**

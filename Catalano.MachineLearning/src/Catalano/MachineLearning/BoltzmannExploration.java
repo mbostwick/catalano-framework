@@ -45,7 +45,7 @@ public class BoltzmannExploration implements IExplorationPolicy{
     private Random r = new Random();
 
     /**
-     *  Initializes a new instance of the BoltzmannExploration class.
+     * Initializes a new instance of the BoltzmannExploration class.
      * @param temperature Temperature parameter of Boltzmann distribution.
      */
     public BoltzmannExploration(double temperature) {

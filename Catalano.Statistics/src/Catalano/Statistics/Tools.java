@@ -172,13 +172,17 @@ public class Tools {
         return r1 / r2;
     }
     
-    public static double StandartDeviation(double[] x){
+    public static double Variance(double[] x){
         double sum = 0;
         double mean = Mean(x);
         for (int i = 0; i < x.length; i++) {
             sum += Math.pow((x[i] - mean), 2);
         }
-        double std = sum / ((double)x.length - 1);
-        return Math.sqrt(std);
+        double var = sum / ((double)x.length - 1);
+        return var;
+    }
+    
+    public static double StandartDeviation(double[] x){
+        return Math.sqrt(Variance(x));
     }
 }

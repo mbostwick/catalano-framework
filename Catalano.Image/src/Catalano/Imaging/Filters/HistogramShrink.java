@@ -22,6 +22,7 @@
 
 package Catalano.Imaging.Filters;
 
+import Catalano.Imaging.Tools.ImageStatistics;
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.IBaseInPlace;
 

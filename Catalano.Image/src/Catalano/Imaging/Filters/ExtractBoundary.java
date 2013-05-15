@@ -63,20 +63,20 @@ public class ExtractBoundary implements IBaseInPlace{
     
     @Override
     public void applyInPlace(FastBitmap fastBitmap){
-        FastBitmap l = new FastBitmap(fastBitmap.toBufferedImage());
+        FastBitmap l = new FastBitmap(fastBitmap);
         
         if (algorithm == Algorithm.Erosion) {
-            Erosion ero = new Erosion();
+            BinaryErosion ero = new BinaryErosion();
             ero.applyInPlace(l);
         }
         else{
-            Dilatation dil = new Dilatation();
+            BinaryDilatation dil = new BinaryDilatation();
             dil.applyInPlace(l);
         }
         
         Difference dif = new Difference(fastBitmap);
         dif.applyInPlace(l);
-        fastBitmap.setImage(l.toBufferedImage());
+        fastBitmap.setImage(l);
     }
     
     /**
@@ -85,7 +85,7 @@ public class ExtractBoundary implements IBaseInPlace{
      * @return List of points.
      */
     public ArrayList<IntPoint> ProcessImage(FastBitmap fastBitmap){
-        FastBitmap l = new FastBitmap(fastBitmap.toBufferedImage());
+        FastBitmap l = new FastBitmap(fastBitmap);
         if (points == null) {
             applyInPlace(l);
         }

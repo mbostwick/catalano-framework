@@ -29,6 +29,7 @@ import Catalano.Imaging.IBaseInPlace;
  * <br />The class implements Otsu thresholding, which is described in <b> N<dot> Otsu, "A threshold selection method from gray-level histograms", IEEE Trans. Systems, Man and Cybernetics 9(1), pp. 62–66, 1979</b>.
  * <br />This implementation instead of minimizing the weighted within-class variance does maximization of between-class variance, what gives the same result.
  * 
+ * @see MaximumEntropyThreshold
  * @author Diego Catalano
  */
 public class OtsuThreshold implements IBaseInPlace{
@@ -50,7 +51,7 @@ public class OtsuThreshold implements IBaseInPlace{
     
     @Override
     public void applyInPlace(FastBitmap fastBitmap){
-        int value = getCalculateThreshold(fastBitmap);
+        int value = CalculateThreshold(fastBitmap);
         Threshold t = new Threshold(value, invert);
         t.applyInPlace(fastBitmap);
     }
@@ -60,7 +61,7 @@ public class OtsuThreshold implements IBaseInPlace{
      * @param fastBitmap FastBitmap
      * @return Threshold value.
      */
-    public int getCalculateThreshold(FastBitmap fastBitmap) {
+    public int CalculateThreshold(FastBitmap fastBitmap) {
         
     this.width = fastBitmap.getWidth();
     this.height = fastBitmap.getHeight();

@@ -1,19 +1,36 @@
+// Catalano Imaging Library
+// The Catalano Framework
+//
+// Copyright © Diego Catalano, 2013
+// diego.catalano at live.com
+//
+//    This library is free software; you can redistribute it and/or
+//    modify it under the terms of the GNU Lesser General Public
+//    License as published by the Free Software Foundation; either
+//    version 2.1 of the License, or (at your option) any later version.
+//
+//    This library is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//    Lesser General Public License for more details.
+//
+//    You should have received a copy of the GNU Lesser General Public
+//    License along with this library; if not, write to the Free Software
+//    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+//
+
 /*
  * Shape Features v0.2
- * Total: 15
+ * Total: 11
  * 
  * Area: Total of pixels white.
  * Area Equivalent Diameter: sqrt((4/Pi)*Area)
- * Aspect Ratio:                                                 IMPLEMENTAR
  * Circularity: 4*Pi*Area/Perimeter^2
  * Compactness: AreaEquivalentDiameter / feretDiameter;
- * Euler Number:                                                 IMPLEMENTAR
  * Feret's Diameter: Maximum diameter.
  * Feret's Points: Points of Feret's Diameter
  * Irregularity: 1/ThinnessRatio
- * Perimeter: Area of contour                                    IMPLEMENTAR
  * Perimeter Equivalent Diameter: area / Pi
- * Perimeter Points: points of perimeter
  * Roudness: 4*Area/(Pi*Feret^2)
  * Shape: Perimeter^2 / area
  * ThinnessRatio: 4*Pi*(area/perimeter)
@@ -26,11 +43,14 @@ import Catalano.Math.Distance;
 import java.util.ArrayList;
 
 /**
- *
+ * 
  * @author Diego Catalano
  */
 public final class ShapeFeatures {
     
+    /**
+     * Don't let anyone instantiate this class.
+     */
     private ShapeFeatures(){};
     
     public static int Area(FastBitmap fastBitmap){
@@ -51,11 +71,6 @@ public final class ShapeFeatures {
         return Math.sqrt(v*area);
     }
     
-    //Implementar
-    public double AspectRatio(){
-        return 0;
-    }
-    
     public double Circularity(int area, int perimeter){
         // Circularity = 4*Pi*Area/Perimeter^2
         double v = 12.566370614359172953850573533118;
@@ -64,11 +79,6 @@ public final class ShapeFeatures {
     
     public double Compactness(int area, double feretDiameter){
         return AreaEquivalentDiameter(area) / feretDiameter;
-    }
-    
-    //Implementar
-    public static int EulerNumber(){
-        return 0;
     }
     
     public static double FeretDiameter(ArrayList<IntPoint> contour){
@@ -113,16 +123,8 @@ public final class ShapeFeatures {
         return 1/thinnessRatio;
     }
     
-    public static int Perimeter(){
-        return 0;
-    }
-    
     public static double PerimeterEquivalentDiameter(int area){
         return area / Math.PI;
-    }
-    
-    public static int PerimeterPoints(){
-        return 0;
     }
     
     public static double Roundness(int area, double feretDiameter){
@@ -132,7 +134,6 @@ public final class ShapeFeatures {
     public static double Shape(int area, int perimeter){
         return (perimeter * perimeter) / area;
     }
-    
     
     public static double ThinnessRatio(int area, int perimeter){
         // Original: 4 * Math.Pi * (area/perimeter)
