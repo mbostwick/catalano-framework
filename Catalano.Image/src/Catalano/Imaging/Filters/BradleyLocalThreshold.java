@@ -39,8 +39,7 @@ public class BradleyLocalThreshold implements IBaseInPlace{
     /**
      * Initialize a new instance of the BradleyLocalThreshold class.
      */
-    public BradleyLocalThreshold() {
-    }
+    public BradleyLocalThreshold() {}
 
     /**
      * Window size to calculate average value of pixels for.
@@ -107,7 +106,7 @@ public class BradleyLocalThreshold implements IBaseInPlace{
                         y2 = widthM1;
                     
                     
-                    int gray = fastBitmap.getGray(x, y) < (int)(im.getRectangleMean(x1, y1, x2, y2) * avgBrightnessPart) ? 0 : 255;
+                    int gray = fastBitmap.getGray(x, y) < (int)(im.getRectangleMeanUnsafe(x1, y1, x2, y2) * avgBrightnessPart) ? 0 : 255;
                     fastBitmap.setGray(x, y, gray);
             }
         }

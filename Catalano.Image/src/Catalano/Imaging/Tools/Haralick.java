@@ -124,7 +124,7 @@ public class Haralick {
         double r = 0;
         for (int i = 0; i < coocurrenceMatrix.length; i++) {
             for (int j = 0; j < coocurrenceMatrix[0].length; j++) {
-                r += (i * j * coocurrenceMatrix[i][j] - stdI * stdJ) / stdI * stdJ;
+                r += (i * j * coocurrenceMatrix[i][j] - meanI * meanJ) / stdI * stdJ;
             }
         }
         return r;

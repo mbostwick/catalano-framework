@@ -114,9 +114,11 @@ public class Morph implements IBaseInPlace{
                         gO = overlayImage.getGreen(x, y);
                         bO = overlayImage.getBlue(x, y);
                         
-                        sourceImage.setGray(x, y, (int)( ( sourcePercent * ( rS ) ) + ( q * ( rO ) )));
-                        sourceImage.setGray(x, y, (int)( ( sourcePercent * ( gS ) ) + ( q * ( gO ) )));
-                        sourceImage.setGray(x, y, (int)( ( sourcePercent * ( bS ) ) + ( q * ( bO ) )));
+                        int r = (int)( ( sourcePercent * ( rS ) ) + ( q * ( rO )));
+                        int g = (int)( ( sourcePercent * ( gS ) ) + ( q * ( gO )));
+                        int b = (int)( ( sourcePercent * ( bS ) ) + ( q * ( bO )));
+                        
+                        sourceImage.setRGB(x, y, r, g, b);
                     }
                 }
             }

@@ -215,9 +215,11 @@ public class LevelsLinear implements IBaseInPlace{
             
             for (int x = 0; x < height; x++) {
                 for (int y = 0; y < width; y++) {
-                    fastBitmap.setRed(x, y, mapRed[fastBitmap.getRed(x, y)]);
-                    fastBitmap.setGreen(x, y, mapGreen[fastBitmap.getGreen(x, y)]);
-                    fastBitmap.setBlue(x, y, mapBlue[fastBitmap.getBlue(x, y)]);
+                    int r = mapRed[fastBitmap.getRed(x, y)];
+                    int g = mapGreen[fastBitmap.getGreen(x, y)];
+                    int b = mapBlue[fastBitmap.getBlue(x, y)];
+                    
+                    fastBitmap.setRGB(x, y, r, g, b);
                 }
             }
         }

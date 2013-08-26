@@ -36,14 +36,11 @@ public class HistogramEqualization implements IBaseInPlace{
     
     private int width;
     private int height;
-
     
     /**
      * Initialize a new instance of the HistogramEqualization class.
      */
-    public HistogramEqualization() {
-        
-    }
+    public HistogramEqualization() {}
     
     @Override
     public void applyInPlace(FastBitmap fastBitmap) {

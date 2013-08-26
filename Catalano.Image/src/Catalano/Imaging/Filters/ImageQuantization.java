@@ -48,11 +48,8 @@ public class ImageQuantization implements IBaseInPlace{
             this.level = Math.min(level, 256);
         }
         else{
-            try {
-                throw new IllegalArgumentException("Level should be power of 2");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            int x = Catalano.Math.Tools.NextPowerOf2(level);
+            this.level = Math.min(x, 256);
         }
     }
 
@@ -61,7 +58,7 @@ public class ImageQuantization implements IBaseInPlace{
         
         int width = fastBitmap.getWidth();
         int height = fastBitmap.getHeight();
-        int reduced = 256 / level - 1;
+        int reduced = 256 / (level - 1);
         int steps = 256 / reduced;
         
         if (fastBitmap.isGrayscale()) {

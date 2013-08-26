@@ -69,6 +69,8 @@ public class MeanShift implements IBaseInPlace{
                     g = fastBitmap.getGreen(x, y);
                     b = fastBitmap.getBlue(x, y);
 
+                    // You can use ColorConverter.RGBtoYIQ but you need to multiply the result with 255.
+                    // In this way its more fast because we spend less processor.
                     pixelsF[x][y][0] = 0.299f  *r + 0.587f *g + 0.114f  *b;
                     pixelsF[x][y][1] = 0.5957f *r - 0.2744f*g - 0.3212f *b;
                     pixelsF[x][y][2] = 0.2114f *r - 0.5226f*g + 0.3111f *b;

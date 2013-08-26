@@ -36,9 +36,7 @@ public class Minimum implements IBaseInPlace{
     /**
      * Initialize a new instance of the Maximum class.
      */
-    public Minimum() {
-        
-    }
+    public Minimum() {}
     
     /**
      * Initialize a new instance of the Maximum class.
@@ -76,49 +74,43 @@ public class Minimum implements IBaseInPlace{
         int lines = CalcLines(radius);
 
         if (sourceImage.isGrayscale()) {
-            int sumGray;
-            int c;
+            int minG;
             for (int x = 0; x < height; x++) {
                 for (int y = 0; y < width; y++) {
-                    c = 0;
-                    sumGray = 255;
+                    minG = 255;
                     for (int i = 0; i < lines; i++) {
                         Xline = x + (i-radius);
                         for (int j = 0; j < lines; j++) {
                             Yline = y + (j-radius);
                             if ((Xline >= 0) && (Xline < height) && (Yline >=0) && (Yline < width)) {
-                                sumGray = Math.min(sumGray,copy.getGray(Xline, Yline));
-                                c++;
+                                minG = Math.min(minG,copy.getGray(Xline, Yline));
                             }
                         }
                     }
-                    sourceImage.setGray(x, y, sumGray);
+                    sourceImage.setGray(x, y, minG);
                 }
             }
         }
-        else{
-            int sumR;
-            int sumG;
-            int sumB;
-            int c;
+        if (sourceImage.isRGB()){
+            int minR;
+            int minG;
+            int minB;
 
             for (int x = 0; x < height; x++) {
                 for (int y = 0; y < width; y++) {
-                    c = 0;
-                    sumR = sumG = sumB = 255;
+                    minR = minG = minB = 255;
                     for (int i = 0; i < lines; i++) {
                         Xline = x + (i-radius);
                         for (int j = 0; j < lines; j++) {
                             Yline = y + (j-radius);
                             if ((Xline >= 0) && (Xline < height) && (Yline >=0) && (Yline < width)) {
-                                sumR = Math.min(sumR,copy.getRed(Xline, Yline));
-                                sumG = Math.min(sumG,copy.getGreen(Xline, Yline));
-                                sumB = Math.min(sumB,copy.getBlue(Xline, Yline));
-                                c++;
+                                minR = Math.min(minR,copy.getRed(Xline, Yline));
+                                minG = Math.min(minG,copy.getGreen(Xline, Yline));
+                                minB = Math.min(minB,copy.getBlue(Xline, Yline));
                             }
                         }
                     }
-                    sourceImage.setRGB(x, y, sumR, sumG, sumB);
+                    sourceImage.setRGB(x, y, minR, minG, minB);
                 }
             }
         }

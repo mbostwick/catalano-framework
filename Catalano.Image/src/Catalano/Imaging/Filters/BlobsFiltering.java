@@ -24,9 +24,9 @@ package Catalano.Imaging.Filters;
 import Catalano.Core.IntPoint;
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.IBaseInPlace;
+import Catalano.Imaging.Tools.Blob;
+import Catalano.Imaging.Tools.BlobDetection;
 import java.util.ArrayList;
-import java.util.Stack;
-import javax.swing.JOptionPane;
 
 /**
  * Eliminates blobs with certain area.

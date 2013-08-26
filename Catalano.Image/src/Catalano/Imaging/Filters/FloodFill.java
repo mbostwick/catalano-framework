@@ -24,6 +24,7 @@ package Catalano.Imaging.Filters;
 import Catalano.Core.IntPoint;
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.IBaseInPlace;
+import java.util.Stack;
 
 /**
  * Flood Fill filter.
@@ -205,7 +206,7 @@ public class FloodFill implements IBaseInPlace{
         
         int width = fastBitmap.getWidth();
         int height = fastBitmap.getHeight();
-        PointStack examList = new PointStack(width,height);
+        Stack<IntPoint> examList = new Stack();
         
         int iR = fastBitmap.getRed(x, y);
         int iG = fastBitmap.getGreen(x, y);
@@ -299,73 +300,73 @@ public class FloodFill implements IBaseInPlace{
         }
     }
 }
-
-/**
- * A simple stack in points for image manipulation.
- * @author Diego Catalano
- */
- class PointStack {
-    
-    int[] dataX;
-    int[] dataY;
-    
-    int walk = 0;
-
-    /**
-     * Create stack.
-     * @param width width of image
-     * @param height height of image
-     */
-    public PointStack(int width, int height) {
-        dataX = new int[height*height*3];
-        dataY = new int[width*width*3];
-    }
-    
-    /**
-     * Pushes a value into the stack.
-     */
-    public void push(IntPoint p){
-        dataX[walk] = p.x;
-        dataY[walk] = p.y;
-        walk++;
-    }
-    
-    /**
-     * Pops a value off of the stack.
-     */
-    public IntPoint pop(){
-        walk--;
-        return new IntPoint(dataX[walk],dataY[walk]);
-    }
-    
-    /**
-     * Peeks at the top of the stack.
-     */
-    public IntPoint peak(){
-        return new IntPoint(dataX[walk - 1], dataY[walk - 1]);
-    }
-    
-    /**
-     * Clears the stack.
-     */
-    public void clear(){
-        walk = 0;
-    }
-    
-    /**
-     * Returns the size of the stack.
-     */
-    public int size(){
-        return walk;
-    }
-    
-    /**
-     * Return true if is empty, otherwise false.
-     */
-    public boolean isEmpty(){
-        if (walk > 0) {
-            return false;
-        }
-        return true;
-    }
-}
+//
+///**
+// * A simple stack in points for image manipulation.
+// * @author Diego Catalano
+// */
+// class PointStack {
+//    
+//    int[] dataX;
+//    int[] dataY;
+//    
+//    int walk = 0;
+//
+//    /**
+//     * Create stack.
+//     * @param width width of image
+//     * @param height height of image
+//     */
+//    public PointStack(int width, int height) {
+//        dataX = new int[height*height*3];
+//        dataY = new int[width*width*3];
+//    }
+//    
+//    /**
+//     * Pushes a value into the stack.
+//     */
+//    public void push(IntPoint p){
+//        dataX[walk] = p.x;
+//        dataY[walk] = p.y;
+//        walk++;
+//    }
+//    
+//    /**
+//     * Pops a value off of the stack.
+//     */
+//    public IntPoint pop(){
+//        walk--;
+//        return new IntPoint(dataX[walk],dataY[walk]);
+//    }
+//    
+//    /**
+//     * Peeks at the top of the stack.
+//     */
+//    public IntPoint peak(){
+//        return new IntPoint(dataX[walk - 1], dataY[walk - 1]);
+//    }
+//    
+//    /**
+//     * Clears the stack.
+//     */
+//    public void clear(){
+//        walk = 0;
+//    }
+//    
+//    /**
+//     * Returns the size of the stack.
+//     */
+//    public int size(){
+//        return walk;
+//    }
+//    
+//    /**
+//     * Return true if is empty, otherwise false.
+//     */
+//    public boolean isEmpty(){
+//        if (walk > 0) {
+//            return false;
+//        }
+//        return true;
+//    }
+//}

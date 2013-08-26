@@ -36,7 +36,7 @@ public class ExtractRGBChannel implements IExtract{
     /**
      * RGB Channel to extract.
      */
-    public enum ExtractRGB {
+    public enum Channel {
 
         /**
          * Red channel.
@@ -51,13 +51,13 @@ public class ExtractRGBChannel implements IExtract{
          */
         B
     };
-    private ExtractRGB rgb;
+    private Channel rgb;
 
     /**
      * Initialize a new instance of the ExtractRGBChannel class.
      * @param rgb RGB channel.
      */
-    public ExtractRGBChannel(ExtractRGB rgb) {
+    public ExtractRGBChannel(Channel rgb) {
         this.rgb = rgb;
     }
 
@@ -65,7 +65,7 @@ public class ExtractRGBChannel implements IExtract{
      * RGB channel.
      * @return RGB channel.
      */
-    public ExtractRGB getRGB() {
+    public Channel getRGB() {
         return rgb;
     }
 
@@ -73,7 +73,7 @@ public class ExtractRGBChannel implements IExtract{
      * RGB channel.
      * @param rgb RGB channel.
      */
-    public void setRGB(ExtractRGB rgb) {
+    public void setRGB(Channel rgb) {
         this.rgb = rgb;
     }
     

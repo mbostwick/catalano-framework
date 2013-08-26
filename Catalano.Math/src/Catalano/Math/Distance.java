@@ -433,4 +433,34 @@ public final class Distance {
         }
         return Math.pow(distance,1/r);
     }
+    
+    /**
+     * Gets the Squared Euclidean distance between two points.
+     * @param x1 X1 axis coordinates.
+     * @param y1 Y1 axis coordinates.
+     * @param x2 X2 axis coordinates.
+     * @param y2 Y2 axis coordinates.
+     * @return The Squared euclidean distance between x and y.
+     */
+    public static double SquaredEuclidean(double x1, double y1, double x2, double y2){
+        
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        return dx*dx + dy*dy;
+        
+    }
+    
+    /**
+     * Gets the Squared Euclidean distance between two points.
+     * @param p IntPoint with X and Y axis coordinates.
+     * @param q IntPoint with X and Y axis coordinates.
+     * @return The Squared euclidean distance between x and y.
+     */
+    public static double SquaredEuclidean(IntPoint p, IntPoint q){
+        
+        double dx = q.x - p.x;
+        double dy = q.y - p.y;
+        return dx*dx + dy*dy;
+        
+    }
 }

@@ -37,7 +37,7 @@ public class ExtractYCbCrChannel implements IBaseInPlace{
     /**
      * Enumeration of components for extraction of channels.
      */
-    public enum ExtractYCbCr {
+    public enum Channel {
 
         /**
          *
@@ -52,13 +52,13 @@ public class ExtractYCbCrChannel implements IBaseInPlace{
          */
         Cr
     };
-    private ExtractYCbCr YCbCr;
+    private Channel YCbCr;
 
     /**
      * Initialize a new instance of the ExtractYCbCrChannel class.
      * @param rgb
      */
-    public ExtractYCbCrChannel(ExtractYCbCr rgb) {
+    public ExtractYCbCrChannel(Channel rgb) {
         this.YCbCr = rgb;
     }
     

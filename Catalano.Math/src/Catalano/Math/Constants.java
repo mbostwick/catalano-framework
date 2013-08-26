@@ -71,6 +71,16 @@ public final class Constants {
      * Episilon constant. 4.94...
      */
     public final static double DoubleEpsilon2 = 4.94065645841247E-324;
+    
+    /**
+     * Complementary Golden ratio.
+     */
+    public final static double ComplementaryGoldenRatio = 0.3819660112501051517954131;
+    
+    /**
+     * Golden ratio constant.
+     */
+    public final static double GoldenRatio = 1.6180339887498948482045868;
 
     /**
      * Single-precision machine roundoff error.
@@ -107,6 +117,11 @@ public final class Constants {
      * Log of two: log(2).
      */
     public final static double Log2 = 0.69314718055994530941;
+    
+    /**
+     * Log of three: log(3).
+     */
+    public final static double Log3 = 1.098612288668109691395;
 
     /**
      * Log of square root of twice number pi: log(sqrt(2*pi).
@@ -132,6 +147,11 @@ public final class Constants {
      * Square root of 2: sqrt(2).
      */
     public final static double Sqrt2 = 1.4142135623730950488016887;
+    
+    /**
+     * Square root of 3: sqrt(3).
+     */
+    public final static double Sqrt3 = 1.7320508075688772935274463;
 
     /**
      * Half square root of 2: sqrt(2)/2.

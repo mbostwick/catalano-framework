@@ -119,10 +119,12 @@ public class FastBitmap {
     public FastBitmap(String pathname){
         try {
             this.bufferedImage = ImageIO.read(new File(pathname));
-        if (getType() == BufferedImage.TYPE_3BYTE_BGR) {
-            toRGB();
-        }
-            refresh();
+            if (getType() == BufferedImage.TYPE_BYTE_GRAY) {
+                refresh();
+            }
+            else{
+                toRGB();
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

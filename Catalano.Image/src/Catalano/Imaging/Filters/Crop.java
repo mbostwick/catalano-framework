@@ -21,7 +21,6 @@
 package Catalano.Imaging.Filters;
 
 import Catalano.Imaging.FastBitmap;
-import java.awt.Rectangle;
 
 /**
  * Crop an image.
@@ -30,7 +29,73 @@ import java.awt.Rectangle;
  */
 public class Crop {
     
-    private Rectangle rectangle;
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+
+    /**
+     * Get Initial X axis coordinate.
+     * @return X axis coordinate.
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Set Initial X axis coordinate.
+     * @param x X axis coordinate.
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * Get Initial Y axis coordinate.
+     * @return Y axis coordinate.
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Set Initial Y axis coordinate.
+     * @param y Y axis coordinate.
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    /*
+     * Get Height.
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Set Height.
+     * @param height Height.
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    /**
+     * Get Width.
+     * @return Width.
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Set Width.
+     * @param width Width.
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
     
     /**
      * Initialize a new instance of the Crop class.
@@ -40,34 +105,10 @@ public class Crop {
      * @param height new height.
      */
     public Crop(int x, int y, int width, int height){
-        this.rectangle.x = x;
-        this.rectangle.y = y;
-        this.rectangle.width = width;
-        this.rectangle.height = height;
-    }
-
-    /**
-     * Initialize a new instance of the Crop class.
-     * @param rectangle Rectangle to crop.
-     */
-    public Crop(Rectangle rectangle) {
-        this.rectangle = rectangle;
-    }
-    
-     /**
-     * Rectangle to crop
-     * @return Rectangle
-     */
-    public Rectangle getRectangle() {
-        return rectangle;
-    }
-
-    /**
-     * Rectangle to crop
-     * @param rectangle Rectangle
-     */
-    public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
     
     /**
@@ -76,12 +117,12 @@ public class Crop {
      */
     public void ApplyInPlace(FastBitmap fastBitmap){
         
-        FastBitmap l = new FastBitmap(rectangle.width, rectangle.height, fastBitmap.getColorSpace());
+        FastBitmap l = new FastBitmap(width, height, fastBitmap.getColorSpace());
         
         if (fastBitmap.isGrayscale()) {
-            for (int x = rectangle.x; x < rectangle.x + rectangle.height; x++) {
-                for (int y = rectangle.y; y < rectangle.y + rectangle.width; y++) {
-                    l.setGray(x - rectangle.x, y - rectangle.y, fastBitmap.getGray(x, y));
+            for (int r = this.x; r < this.x + this.height; r++) {
+                for (int c = this.y; c < this.y + this.width; c++) {
+                    l.setGray(r - this.x, c - this.y, fastBitmap.getGray(r, c));
                 }
             }
 
@@ -89,16 +130,15 @@ public class Crop {
         }
         else{
             int X,Y;
-            for (int x = rectangle.x; x < rectangle.x + rectangle.height; x++) {
-                for (int y = rectangle.y; y < rectangle.y + rectangle.width; y++) {
-                    X = x - rectangle.x;
-                    Y = y - rectangle.y;
-                    l.setRed(X, Y, fastBitmap.getRed(x, y));
-                    l.setGreen(X, Y, fastBitmap.getGreen(x, y));
-                    l.setBlue(X, Y, fastBitmap.getBlue(x, y));
+            for (int r = this.x; r < this.x + this.height; r++) {
+                for (int c = this.y; c < this.y + this.width; c++) {
+                    X = r - this.x;
+                    Y = c - this.y;
+                    l.setRed(X, Y, fastBitmap.getRed(r, c));
+                    l.setGreen(X, Y, fastBitmap.getGreen(r, c));
+                    l.setBlue(X, Y, fastBitmap.getBlue(r, c));
                 }
             }
-
             fastBitmap.setImage(l);
         }
     }

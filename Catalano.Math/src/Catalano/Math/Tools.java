@@ -40,6 +40,44 @@ public final class Tools {
     private Tools() {}
     
     /**
+     * Gets the angle formed by the vector [x,y].
+     * @param x X axis coordinate.
+     * @param y Y axis coordinate.
+     * @return Angle formed by the vector.
+     */
+    public static float Angle(float x, float y){
+        if (y >= 0){
+            if (x >= 0)
+                return (float)Math.atan(y / x);
+            return (float)(Math.PI - Math.atan(-y / x));
+        }
+        else{
+            if (x >= 0)
+                return (float)(2 * Math.PI - Math.atan(-y / x));
+            return (float)(Math.PI + Math.atan(y / x));
+        }
+    }
+    
+    /**
+     * Gets the angle formed by the vector [x,y].
+     * @param x X axis coordinate.
+     * @param y Y axis coordinate.
+     * @return Angle formed by the vector.
+     */
+    public static double Angle(double x, double y){
+        if (y >= 0){
+            if (x >= 0)
+                return Math.atan(y / x);
+            return (Math.PI - Math.atan(-y / x));
+        }
+        else{
+            if (x >= 0)
+                return (2 * Math.PI - Math.atan(-y / x));
+            return (Math.PI + Math.atan(y / x));
+        }
+    }
+    
+    /**
      * Checks if the specified integer is power of 2.
      * @param x Integer number to check.
      * @return True: if the specified number is power of 2, otherwise returns false.
@@ -58,6 +96,30 @@ public final class Tools {
         if (m < 0) m = -m;
         int r = x % m;
         return r < 0 ? r + m : r;
+    }
+    
+    /**
+     * Returns the next power of 2 after the input value x.
+     * @param x Input value x.
+     * @return Returns the next power of 2 after the input value x.
+     */
+    public static int NextPowerOf2(int x){
+        --x;
+        x |= x >> 1;
+        x |= x >> 2;
+        x |= x >> 4;
+        x |= x >> 8;
+        x |= x >> 16;
+        return ++x;
+    }
+    
+    /**
+     * Returns the previous power of 2 after the input value x.
+     * @param  Input value x.
+     * @return Returns the previous power of 2 after the input value x.
+     */
+    public static int PreviousPowerOf2(int x){
+        return NextPowerOf2(x + 1) / 2;
     }
     
     /**

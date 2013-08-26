@@ -25,13 +25,20 @@ import Catalano.Imaging.FastBitmap;
 
 /**
  * Objective Fidelity Criteria.
+ * 
  * The Objective criteria, although widely used, are not necessarily correlated with out perception of image quality. For instance,
  * an image with a low error as determined by an objective measure may actually look much worse than an image with a high error metric.
+ * 
  * @author Diego Catalano
  */
 public class ObjectiveFidelity {
     private FastBitmap original, reconstructed;
 
+    /**
+     * Initialize a new instance of the ObjectiveFidelity class.
+     * @param original Original image.
+     * @param reconstructed Reconstructed image.
+     */
     public ObjectiveFidelity(FastBitmap original, FastBitmap reconstructed) {
         this.original = original;
         this.reconstructed = reconstructed;
@@ -94,5 +101,4 @@ public class ObjectiveFidelity {
         sum = 10 * Math.log10(sum);
         return sum;
     }
-    
 }

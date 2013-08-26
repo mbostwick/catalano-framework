@@ -26,7 +26,7 @@ import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.Filters.Convolution;
 
 /**
- * Laws Texture Energy Masks works by finding the average gray Level, Edges, Spots, Ripples, and Waves in the image.
+ * Laws Texture Energy Masks works by finding the average gray: Level, Edges, Spots, Ripples, and Waves in the image.
  * @author Diego Catalano
  */
 public class LawsTextureEnergy{

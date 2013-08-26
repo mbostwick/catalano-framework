@@ -306,6 +306,57 @@ public final class Matrix {
     }
     
     /**
+     * Multiply a Matrix with scalar value.
+     * @param A Matrix.
+     * @param value Value.
+     * @return The multiply of the matrix with scalar value.
+     */
+    public static double[][] Multiply(double[][] A, double value){
+        
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < A[0].length; j++) {
+                A[i][j] *= value;
+            }
+        }
+        return A;
+        
+    }
+    
+    /**
+     * Multiply a Matrix with scalar value.
+     * @param A Matrix.
+     * @param value Value.
+     * @return The multiply of the matrix with scalar value.
+     */
+    public static float[][] Multiply(float[][] A, float value){
+        
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < A[0].length; j++) {
+                A[i][j] *= value;
+            }
+        }
+        return A;
+        
+    }
+    
+    /**
+     * Multiply a Matrix with scalar value.
+     * @param A Matrix.
+     * @param value Value.
+     * @return The multiply of the matrix with scalar value.
+     */
+    public static int[][] Multiply(int[][] A, int value){
+        
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < A[0].length; j++) {
+                A[i][j] *= value;
+            }
+        }
+        return A;
+        
+    }
+    
+    /**
      * Gets the transpose of the matrix.
      * @param A Matrix.
      * @return Transposed matrix.

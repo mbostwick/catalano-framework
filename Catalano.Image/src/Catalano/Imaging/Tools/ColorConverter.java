@@ -23,6 +23,7 @@ package Catalano.Imaging.Tools;
 
 /**
  * Convert between different color spaces supported.
+ * RGB -> CMYK -> RGB
  * RGB -> YIQ -> RGB
  * RGB -> YCbCr -> RGB
  * RGB -> YUV -> RGB
@@ -72,6 +73,51 @@ public class ColorConverter {
     public static float[] CIE10_F2 = {103.280f, 100f, 69.026f}; //Fluorescent
     public static float[] CIE10_F7 = {95.792f, 100f, 107.687f};
     public static float[] CIE10_F11 = {103.866f, 100f, 65.627f};
+    
+    /**
+     * RFB -> CMYK
+     * @param red Values in the range [0..255].
+     * @param green Values in the range [0..255].
+     * @param blue Values in the range [0..255].
+     * @return CMYK color space. Normalized.
+     */
+    public static float[] RGBtoCMYK(int red, int green, int blue){
+        float[] cmyk = new float[4];
+        
+        float r = red / 255f;
+        float g = green / 255f;
+        float b = blue / 255f;
+        
+        float k = 1.0f - Math.max(r, Math.max(g, b));
+        float c = (1f-r-k) / (1f-k);
+        float m = (1f-g-k) / (1f-k);
+        float y = (1f-b-k) / (1f-k);
+        
+        cmyk[0] = c;
+        cmyk[1] = m;
+        cmyk[2] = y;
+        cmyk[3] = k;
+        
+        return cmyk;
+    }
+    
+    /**
+     * CMYK -> RGB
+     * @param c Cyan.
+     * @param m Magenta.
+     * @param y Yellow.
+     * @param k Black.
+     * @return RGB color space.
+     */
+    public static int[] CMYKtoRGB(float c, float m, float y, float k){
+        int[] rgb = new int[3];
+        
+        rgb[0] = (int)(255 * (1-c) * (1-k));
+        rgb[1] = (int)(255 * (1-m) * (1-k));
+        rgb[2] = (int)(255 * (1-y) * (1-k));
+        
+        return rgb;
+    }
     
     /**
      * RGB -> YUV.
@@ -623,36 +669,46 @@ public class ColorConverter {
         
         float max = Math.max(r,Math.max(r,b));
         float min = Math.min(r,Math.min(r,b));
-        float range = max - min;
+        float delta = max - min;
         
-        //Luminance
+        //HSK
+        float h = 0;
+        float s = 0;
         float l = (max + min) / 2;
         
-        //Saturation
-        float s = 0;
-        if (0 < l && l < 1){
-            float d = (l <= 0.5f) ? l : (1 - l);
-            s = 0.5f * range / d;
+        if ( delta == 0 ){
+            // gray color
+            h = 0;
+            s = 0.0f;
         }
-        
-        //Hue
-        float h = 0;
-        if (max > 0 && range > 0){
-            float rr = (float)(max - r) / range;
-            float gg = (float)(max - g) / range;
-            float bb = (float)(max - b) / range;
-            float hh;
-            if (r == max)
-                hh = bb - gg;
-            else if (g == max)
-                hh = rr - bb + 2.0f;
+        else
+        {
+            // get saturation value
+            s = ( l <= 0.5 ) ? ( delta / ( max + min ) ) : ( delta / ( 2 - max - min ) );
+
+            // get hue value
+            float hue;
+
+            if ( r == max )
+            {
+                hue = ( ( g - b ) / 6 ) / delta;
+            }
+            else if ( g == max )
+            {
+                hue = ( 1.0f / 3 ) + ( ( b - r ) / 6 ) / delta; 
+            }
             else
-                hh = gg - rr + 4.0f;
-            
-            if (hh < 0)
-                hh += 6;
-            
-            hh /= 6;
+            {
+                hue = ( 2.0f / 3 ) + ( ( r - g ) / 6 ) / delta;
+            }
+
+            // correct hue if needed
+            if ( hue < 0 )
+                hue += 1;
+            if ( hue > 1 )
+                hue -= 1;
+
+            h = (int) ( hue * 360 );
         }
         
         hsl[0] = h;
@@ -673,34 +729,45 @@ public class ColorConverter {
         int[] rgb = new int[3];
         float r = 0, g = 0, b = 0;
         
-        if (luminance <= 0)
-            r = g = b = 0;
-        else if (luminance >= 1)
-            r = g = b = 1;
-        else{
-            float hh = (6 * hue) % 6;
-            int c1 = (int)hh;
-            float c2 = hh - c1;
-            float d = (luminance <= 0.5f) ? (saturation * luminance) : (saturation * (1 - luminance));
-            float w = luminance + d;
-            float x = luminance - d;
-            float y = w - (w - x) * c2;
-            float z = x + (w - x) * c2;
-            switch (c1){
-                case 0: r = w; g = z; b = x; break;
-                case 1: r = y; g = w; b = x; break;
-                case 2: r = x; g = w; b = z; break;
-                case 3: r = x; g = y; b = w; break;
-                case 4: r = z; g = x; b = w; break;
-                case 5: r = w; g = x; b = y; break;
-            }
+        if ( saturation == 0 )
+        {
+            // gray values
+            r = g = b = (int) ( luminance * 255 );
+        }
+        else
+        {
+            float v1, v2;
+            float h = (float) hue / 360;
+
+            v2 = ( luminance < 0.5 ) ?
+                ( luminance * ( 1 + saturation ) ) :
+                ( ( luminance + saturation ) - ( luminance * saturation ) );
+            v1 = 2 * luminance - v2;
+
+            r = (int) ( 255 * Hue_2_RGB( v1, v2, h + ( 1.0f / 3 ) ) );
+            g = (int) ( 255 * Hue_2_RGB( v1, v2, h ) );
+            b = (int) ( 255 * Hue_2_RGB( v1, v2, h - ( 1.0f / 3 ) ) );
         }
         
-        rgb[0] = (int)(r * 255);
-        rgb[1] = (int)(g * 255);
-        rgb[2] = (int)(b * 255);
+        rgb[0] = (int)r;
+        rgb[1] = (int)g;
+        rgb[2] = (int)b;
         
         return rgb;
+    }
+    
+    private static float Hue_2_RGB( float v1, float v2, float vH ){
+        if ( vH < 0 )
+            vH += 1;
+        if ( vH > 1 )
+            vH -= 1;
+        if ( ( 6 * vH ) < 1 )
+            return ( v1 + ( v2 - v1 ) * 6 * vH );
+        if ( ( 2 * vH ) < 1 )
+            return v2;
+        if ( ( 3 * vH ) < 2 )
+            return ( v1 + ( v2 - v1 ) * ( ( 2.0f / 3 ) - vH ) * 6 );
+        return v1;
     }
     
     /**

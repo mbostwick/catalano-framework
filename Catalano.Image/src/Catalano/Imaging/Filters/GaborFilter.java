@@ -31,6 +31,7 @@ import Catalano.Math.Functions.Gabor.Config;
 
 /**
  * Gabor Filter.
+ * 
  * <para> In image processing, a Gabor filter, named after Dennis Gabor, is a linear filter used for edge detection.
  * Frequency and orientation representations of Gabor filters are similar to those of the human visual system,
  * and they have been found to be particularly appropriate for texture representation and discrimination.
@@ -51,7 +52,7 @@ public class GaborFilter implements IBaseInPlace{
     private double theta = 0.6;
     
     // Phase offset
-    private double phi = 1.0;
+    private double psi = 1.0;
     
     // Gaussian variance
     private double sigma = 2.0;
@@ -78,82 +79,82 @@ public class GaborFilter implements IBaseInPlace{
     }
 
     /**
-     * Get Lambda (Wavelength).
+     * Get Wavelength (Lambda).
      * @return Lambda value.
      */
-    public double getLambda() {
+    public double getWavelength() {
         return lambda;
     }
 
     /**
-     * Set Lambda (Wavelength).
+     * Set Wavelength (Lambda).
      * @param lambda Lambda value.
      */
-    public void setLambda(double lambda) {
+    public void setWavelength(double lambda) {
         this.lambda = lambda;
     }
 
     /**
-     * Get Theta (Orientation).
+     * Get Orientation (Theta).
      * @return Theta value.
      */
-    public double getTheta() {
+    public double getOrientation() {
         return theta;
     }
 
     /**
-     * Set Theta (Orientation).
+     * Set Orientation (Theta).
      * @param theta Theta value.
      */
-    public void setTheta(double theta) {
+    public void setOrientation(double theta) {
         this.theta = theta;
     }
 
     /**
-     * Get Phi (Phase offset).
+     * Get Phase offset (Psi).
      * @return Phi value.
      */
-    public double getPhi() {
-        return phi;
+    public double getPhaseOffset() {
+        return psi;
     }
 
     /**
-     * Set Phi (Phase offset).
+     * Set Phase offset (Psi).
      * @param phi 
      */
-    public void setPhi(double phi) {
-        this.phi = phi;
+    public void setPhaseOffset(double psi) {
+        this.psi = psi;
     }
 
     /**
-     * Get Sigma (Gaussian variance).
+     * Get Gaussian variance (Sigma).
      * @return Sigma value.
      */
-    public double getSigma() {
+    public double getGaussianVar() {
         return sigma;
     }
 
     /**
-     * Set Sigma (Gaussian variance).
+     * Set Gaussian variance (Sigma).
      * @param sigma Sigma value.
      */
-    public void setSigma(double sigma) {
+    public void setGaussianVar(double sigma) {
         this.sigma = sigma;
     }
 
     /**
-     * Get Gamma (Aspect ratio).
+     * Get Aspect ratio (Gamma).
      * @return gamma.
      */
-    public double getGamma() {
+    public double getAspectRatio() {
         return gamma;
     }
 
     /**
-     * Set Gamma (Aspect ratio).
+     * Set Aspect ratio (Gamma).
      * @param gamma Gamma.
      */
-    public void setGamma(double gamma) {
+    public void setAspectRatio(double gamma) {
         this.gamma = gamma;
     }
 
@@ -197,78 +198,79 @@ public class GaborFilter implements IBaseInPlace{
 
     /**
      * Initializes a new instance of the GaborFilterFinal class.
-     * @param lambda Lambda.
+     * @param wavelength Wavelength.
      */
-    public GaborFilter(double lambda) {
-        this.lambda = lambda;
+    public GaborFilter(double wavelength) {
+        this.lambda = wavelength;
     }
 
     /**
      * Initializes a new instance of the GaborFilterFinal class.
-     * @param lambda Lambda.
-     * @param theta Theta.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
      */
-    public GaborFilter(double lambda, double theta) {
-        this.lambda = lambda;
-        this.theta = theta;
+    public GaborFilter(double wavelength, double orientation) {
+        this.lambda = wavelength;
+        this.theta = orientation;
     }
 
     /**
      * Initializes a new instance of the GaborFilterFinal class.
-     * @param lambda Lambda.
-     * @param theta Theta.
-     * @param phi Phi.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
      */
-    public GaborFilter(double lambda, double theta, double phi) {
-        this.lambda = lambda;
-        this.theta = theta;
-        this.phi = phi;
+    public GaborFilter(double wavelength, double orientation, double phaseOffset) {
+        this.lambda = wavelength;
+        this.theta = orientation;
+        this.psi = phaseOffset;
     }
 
     /**
      * Initializes a new instance of the GaborFilterFinal class.
-     * @param lambda Lambda.
-     * @param theta Theta.
-     * @param phi Phi.
-     * @param sigma Sigma.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
+     * @param gaussianVar Gaussian variance.
      */
-    public GaborFilter(double lambda, double theta, double phi, double sigma) {
-        this.lambda = lambda;
-        this.theta = theta;
-        this.phi = phi;
-        this.sigma = sigma;
+    public GaborFilter(double wavelength, double orientation, double phaseOffset, double gaussianVar) {
+        this.lambda = wavelength;
+        this.theta = orientation;
+        this.psi = phaseOffset;
+        this.sigma = gaussianVar;
     }
 
     /**
      * Initializes a new instance of the GaborFilterFinal class.
-     * @param lambda Lambba.
-     * @param theta Theta.
-     * @param phi Phi.
-     * @param sigma Sigma.
-     * @param gamma Gamma.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
+     * @param gaussianVar Gaussian variance.
+     * @param aspectRatio Aspect ratio.
      */
-    public GaborFilter(double lambda, double theta, double phi, double sigma, double gamma) {
-        this.lambda = lambda;
-        this.theta = theta;
-        this.phi = phi;
-        this.sigma = sigma;
-        this.gamma = gamma;
+    public GaborFilter(double wavelength, double orientation, double phaseOffset, double gaussianVar, double aspectRatio) {
+        this.lambda = wavelength;
+        this.theta = orientation;
+        this.psi = phaseOffset;
+        this.sigma = gaussianVar;
+        this.gamma = aspectRatio;
     }
     
     /**
      * Initializes a new instance of the GaborFilterFinal class.
-     * @param lambda Lambba.
-     * @param theta Theta.
-     * @param phi Phi.
-     * @param sigma Sigma.
-     * @param gamma Gamma.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
+     * @param gaussianVar Gaussian variance.
+     * @param aspectRatio Aspect ratio.
+     * @param config Gabor configuration.
      */
-    public GaborFilter(double lambda, double theta, double phi, double sigma, double gamma, Gabor.Config config) {
-        this.lambda = lambda;
-        this.theta = theta;
-        this.phi = phi;
-        this.sigma = sigma;
-        this.gamma = gamma;
+    public GaborFilter(double wavelength, double orientation, double phaseOffset, double gaussianVar, double aspectRatio, Gabor.Config config) {
+        this.lambda = wavelength;
+        this.theta = orientation;
+        this.psi = phaseOffset;
+        this.sigma = gaussianVar;
+        this.gamma = aspectRatio;
         this.config = config;
     }
 
@@ -281,7 +283,7 @@ public class GaborFilter implements IBaseInPlace{
         
         if (fastBitmap.isGrayscale()){
             
-            gaborKernel = Gabor.Kernel2D(size, lambda, theta, phi, sigma, gamma, config);
+            gaborKernel = Gabor.Kernel2D(size, lambda, theta, psi, sigma, gamma, config);
             int[][] gaborResponse = applyGabor(fastBitmap, gaborKernel);
             int maxG = Integer.MIN_VALUE;
             int minG = Integer.MAX_VALUE;
@@ -348,16 +350,19 @@ public class GaborFilter implements IBaseInPlace{
      */
     private int[][] applyGabor(FastBitmap fastBitmap, double[][] gaborKernel){
         
+        int height = fastBitmap.getHeight();
+        int width = fastBitmap.getWidth();
+        
         int xmax=(int)Math.floor(gaborKernel.length / 2.0);
         int ymax=(int)Math.floor(gaborKernel[0].length / 2.0);
-        int[][] gaborResponse = new int[fastBitmap.getHeight()][fastBitmap.getWidth()];
+        int[][] gaborResponse = new int[height][width];
         
-        for (int x=0; x < fastBitmap.getHeight();x++){
-            for (int y=0; y < fastBitmap.getWidth();y++){
+        for (int x=0; x < height;x++){
+            for (int y=0; y < width;y++){
                 double sum = 0;
                 for (int xf = -xmax; xf <= xmax; xf++){
                     for (int yf = -ymax; yf <= ymax; yf++){
-                        if (x-xf >= 0 && x-xf < fastBitmap.getHeight() && y-yf >= 0 && y-yf < fastBitmap.getWidth()){
+                        if (x-xf >= 0 && x-xf < height && y-yf >= 0 && y-yf < width){
                             int value = fastBitmap.getGray(x - xf, y - yf);
                             sum += gaborKernel[xf + xmax][yf + ymax] * value;
                         }

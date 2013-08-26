@@ -74,23 +74,40 @@ public class Maximum implements IBaseInPlace{
         int lines = CalcLines(radius);
 
         if (sourceImage.isGrayscale()) {
-            int sumGray;
-            int c;
+            int maxG;
             for (int x = 0; x < height; x++) {
                 for (int y = 0; y < width; y++) {
-                    c = 0;
-                    sumGray = 0;
+                    maxG = 0;
                     for (int i = 0; i < lines; i++) {
                         Xline = x + (i-radius);
                         for (int j = 0; j < lines; j++) {
                             Yline = y + (j-radius);
                             if ((Xline >= 0) && (Xline < height) && (Yline >=0) && (Yline < width)) {
-                                sumGray = Math.max(sumGray,copy.getGray(Xline, Yline));
-                                c++;
+                                maxG = Math.max(maxG,copy.getGray(Xline, Yline));
                             }
                         }
                     }
-                    sourceImage.setGray(x, y, sumGray);
+                    sourceImage.setGray(x, y, maxG);
+                }
+            }
+        }
+        if (sourceImage.isRGB()){
+           int maxR, maxG, maxB;
+            for (int x = 0; x < height; x++) {
+                for (int y = 0; y < width; y++) {
+                    maxR = maxG = maxB = 0;
+                    for (int i = 0; i < lines; i++) {
+                        Xline = x + (i-radius);
+                        for (int j = 0; j < lines; j++) {
+                            Yline = y + (j-radius);
+                            if ((Xline >= 0) && (Xline < height) && (Yline >=0) && (Yline < width)) {
+                                maxR = Math.max(maxG,copy.getRed(Xline, Yline));
+                                maxG = Math.max(maxG,copy.getGreen(Xline, Yline));
+                                maxB = Math.max(maxB,copy.getBlue(Xline, Yline));
+                            }
+                        }
+                    }
+                    sourceImage.setRGB(x, y, maxR, maxG, maxB);
                 }
             }
         }

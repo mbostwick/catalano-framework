@@ -23,7 +23,6 @@ package Catalano.Imaging.Filters;
 
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.IBaseInPlace;
-import Catalano.Math.Matrix;
 
 /**
  * Dilatation operator from Mathematical Morphology.
@@ -38,7 +37,6 @@ public class Dilatation implements IBaseInPlace{
     
     private int radius = 0;
     private int[][] kernel;
-    private int[][] mask;
 
     /**
      * Initialize a new instance of the Dilatation class.
@@ -72,26 +70,30 @@ public class Dilatation implements IBaseInPlace{
         if (fastBitmap.isGrayscale()){
             if (kernel == null)
                 createKernel(radius);
-            this.mask = createMask(radius);
             
             FastBitmap copy = new FastBitmap(fastBitmap);
-            for (int i = 1; i < height; i++) {
-                for (int j = 1; j < width; j++) {
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
                     
                     int X = 0,Y;
+                    int max = 0;
                     for (int x = i - radius; x < i + radius + 1; x++) {
                         Y = 0;
                         for (int y = j - radius; y < j + radius + 1; y++) {
                             
                             if (x >= 0 && x < height && y >= 0 && y < width){
-                                mask[X][Y] = copy.getGray(x, y) + kernel[X][Y];
+                                int val = copy.getGray(x, y) + kernel[X][Y];
+                                
+                                if (val > max)
+                                    max = val;
+                                
                             }
                             Y++;
                         }
                         X++;
                     }
-                    int max = Matrix.Max(mask);
-                    max = max >  255 ? 255 : max;
+                    
+                    max = max > 255 ? 255 : max;
                     fastBitmap.setGray(i, j, max);
                 }
             }
@@ -99,37 +101,41 @@ public class Dilatation implements IBaseInPlace{
         if (fastBitmap.isRGB()){
             if (kernel == null)
                 createKernel(radius);
-            int[][] redMask = createMask(radius);
-            int[][] greenMask = createMask(radius);
-            int[][] blueMask = createMask(radius);
             
             FastBitmap copy = new FastBitmap(fastBitmap);
-            for (int i = 1; i < height; i++) {
-                for (int j = 1; j < width; j++) {
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
                     
                     int X = 0,Y;
+                    int maxR = 0, maxG = 0, maxB = 0;
                     for (int x = i - radius; x < i + radius + 1; x++) {
                         Y = 0;
                         for (int y = j - radius; y < j + radius + 1; y++) {
                             
                             if (x >= 0 && x < height && y >= 0 && y < width){
-                                redMask[X][Y] = copy.getRed(x, y) + kernel[X][Y];
-                                greenMask[X][Y] = copy.getGreen(x, y) + kernel[X][Y];
-                                blueMask[X][Y] = copy.getBlue(x, y) + kernel[X][Y];
+                                int valR = copy.getRed(x, y) + kernel[X][Y];
+                                int valG = copy.getGreen(x, y) + kernel[X][Y];
+                                int valB = copy.getBlue(x, y) + kernel[X][Y];
+                                
+                                if (valR > maxR)
+                                    maxR = valR;
+                                
+                                if (valG > maxG)
+                                    maxG = valG;
+                                
+                                if (valB > maxB)
+                                    maxB = valB;
+                                
                             }
                             Y++;
                         }
                         X++;
                     }
-                    int maxRed = Matrix.Max(redMask);
-                    int maxGreen = Matrix.Max(greenMask);
-                    int maxBlue = Matrix.Max(blueMask);
                     
-                    maxRed = maxRed >  255 ? 255 : maxRed;
-                    maxGreen = maxGreen >  255 ? 255 : maxGreen;
-                    maxBlue = maxBlue >  255 ? 255 : maxBlue;
-                    
-                    fastBitmap.setRGB(i, j, maxRed, maxGreen, maxBlue);
+                    maxR = maxR >  255 ? 255 : maxR;
+                    maxG = maxG >  255 ? 255 : maxG;
+                    maxB = maxB >  255 ? 255 : maxB;
+                    fastBitmap.setRGB(i, j, maxR, maxG, maxB);
                 }
             }
         }
@@ -143,16 +149,5 @@ public class Dilatation implements IBaseInPlace{
                 kernel[i][j] = 1;
             }
         }
-    }
-    
-    private int[][] createMask(int radius){
-        int size = radius * 2 + 1;
-        int[][] mask = new int[size][size];
-        for (int i = 0; i < mask.length; i++) {
-            for (int j = 0; j < mask[0].length; j++) {
-                mask[i][j] = 0;
-            }
-        }
-        return mask;
     }
 }

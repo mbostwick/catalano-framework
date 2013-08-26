@@ -49,7 +49,18 @@ public class IntegralImage {
     public IntegralImage(FastBitmap fastBitmap) {
         this.width = fastBitmap.getWidth();
         this.height = fastBitmap.getHeight();
-        ProcessImage(fastBitmap);
+        Process(fastBitmap);
+    }
+    
+    /**
+     * Initializes a new instance of the IntegralImage class.
+     * @param width Image width.
+     * @param height Image height.
+     */
+    protected IntegralImage(int width, int height){
+        this.width = width;
+        this.height = height;
+        this.integralImage = new int[height + 1][width  + 1];
     }
 
     /**
@@ -76,7 +87,48 @@ public class IntegralImage {
         return integralImage;
     }
     
-    private void ProcessImage(FastBitmap fastBitmap){
+    /**
+     * Provides access to internal value keeping integral image data.
+     * @param x X axis coordinate.
+     * @param y Y axis coordinate.
+     * @return Integral value.
+     */
+    public int getInternalData(int x, int y){
+        return integralImage[x][y];
+    }
+    
+    /**
+     * Construct integral image from source grayscale image.
+     * @param fastBitmap Image to be processed.
+     * @return Returns integral image.
+     */
+    public static IntegralImage FromFastBitmap(FastBitmap fastBitmap){
+        // get source image size
+        int width  = fastBitmap.getWidth();
+        int height = fastBitmap.getHeight();
+
+        // create integral image
+        IntegralImage im = new IntegralImage( width, height );
+        int[][] integralImage = im.integralImage;
+
+        for (int i = 1; i <= height; i++) {
+            
+            int rowSum = 0;
+            
+            for (int j = 1; j <= width; j++) {
+                rowSum += fastBitmap.getGray(i - 1, j - 1);
+                integralImage[i][j] = rowSum + integralImage[i - 1][j];
+            }
+        }
+        
+        return im;
+    }
+    
+    /**
+     * Process image.
+     * @param fastBitmap Image to be processed.
+     */
+    private void Process(FastBitmap fastBitmap){
         if (!fastBitmap.isGrayscale()) {
             try {
                 throw new Exception("IntegralImage works only with Grayscale images");
@@ -87,15 +139,13 @@ public class IntegralImage {
         
         integralImage = new int[height + 1][width + 1];
         
-        for (int x = 1; x < height; x++) {
+        for (int x = 1; x < height + 1; x++) {
             int rowSum = 0;
-            for (int y = 1; y < width; y++) {
+            for (int y = 1; y < width + 1; y++) {
                 rowSum += fastBitmap.getGray(x - 1, y - 1);
                 integralImage[x][y] = rowSum + integralImage[x - 1][y];
             }
         }
-        
-        
     }
     
     /**
@@ -178,7 +228,7 @@ public class IntegralImage {
      */
     public float getRectangleMean(int x1, int y1, int x2, int y2){
         // check if requested rectangle is out of the image
-        if ( ( x2 < 0 ) || ( y2 < 0 ) || ( x1 >= width ) || ( y1 >= height ) )
+        if ( ( x2 < 0 ) || ( y2 < 0 ) || ( x1 >= height ) || ( y1 >= width ) )
             return 0;
 
         if ( x1 < 0 ) x1 = 0;
@@ -187,7 +237,7 @@ public class IntegralImage {
         x2++;
         y2++;
 
-        if ( x2 > height )  x2 = height;
+        if ( x2 > height ) x2 = height;
         if ( y2 > width ) y2 = width;
 
         // return sum divided by actual rectangles size
@@ -245,7 +295,7 @@ public class IntegralImage {
         y2++;
 
         // return sum divided by actual rectangles size
-        return (float) ( (double) ( integralImage[x2][y2] + integralImage[x1][y1] - integralImage[x2][y1] - integralImage[x1][y2] ) /
+        return (float) ( (double) ( integralImage[x2][y2] + integralImage[x1][y1] - integralImage[x1][y2] - integralImage[x2][y1] ) /
             (double) ( ( x2 - x1 ) * ( y2 - y1 ) ) );
     }
     

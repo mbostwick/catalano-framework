@@ -92,7 +92,7 @@ public class ComplexNumber {
      * @param z2 Complex Number.
      * @return Returns new ComplexNumber instance containing the sum of specified complex numbers.
      */
-    public ComplexNumber Add(ComplexNumber z1, ComplexNumber z2){
+    public static ComplexNumber Add(ComplexNumber z1, ComplexNumber z2){
         return new ComplexNumber(z1.real + z2.real, z1.imaginary + z2.imaginary);
     }
     
@@ -111,7 +111,7 @@ public class ComplexNumber {
      * @param z2 Complex Number.
      * @return Returns new ComplexNumber instance containing the subtract of specified complex numbers.
      */
-    public ComplexNumber Subtract(ComplexNumber z1, ComplexNumber z2){
+    public static ComplexNumber Subtract(ComplexNumber z1, ComplexNumber z2){
         return new ComplexNumber(z1.real - z2.real, z1.imaginary - z2.imaginary);
     }
     
@@ -130,7 +130,7 @@ public class ComplexNumber {
      * @param z2 Complex Number.
      * @return Returns new ComplexNumber instance containing the multiply of specified complex numbers.
      */
-    public ComplexNumber Multiply(ComplexNumber z1, ComplexNumber z2){
+    public static ComplexNumber Multiply(ComplexNumber z1, ComplexNumber z2){
         double z1R = z1.real, z1I = z1.imaginary;
         double z2R = z2.real, z2I = z2.imaginary;
         
@@ -152,7 +152,7 @@ public class ComplexNumber {
      * @param z2 Complex Number.
      * @return Returns new ComplexNumber instance containing the divide of specified complex numbers.
      */
-    public ComplexNumber Divide(ComplexNumber z1, ComplexNumber z2){
+    public static ComplexNumber Divide(ComplexNumber z1, ComplexNumber z2){
         double z1R = z1.real, z1I = z1.imaginary;
         double z2R = z2.real, z2I = z2.imaginary;
         double squared = z2R*z2R + z2I*z2I;
@@ -185,7 +185,7 @@ public class ComplexNumber {
      * @param z1 Complex Number instance.
      * @return Returns new ComplexNumber instance containing the natural logarithm of the specified complex number.
      */
-    public ComplexNumber Log(ComplexNumber z1){
+    public static ComplexNumber Log(ComplexNumber z1){
         ComplexNumber result = new ComplexNumber();
 
         if ( ( z1.real > 0.0 ) && ( z1.imaginary == 0.0 ) ){
@@ -215,7 +215,7 @@ public class ComplexNumber {
      * @param z1 A Complex Number instance.
      * @return Returns new ComplexNumber instance containing the exponent of the specified complex number.
      */
-    public ComplexNumber Exp(ComplexNumber z1){
+    public static ComplexNumber Exp(ComplexNumber z1){
         ComplexNumber x,y;
         x = new ComplexNumber(Math.exp(z1.real),0.0);
         y = new ComplexNumber(Math.cos(z1.imaginary),Math.sin(z1.imaginary));
@@ -228,7 +228,7 @@ public class ComplexNumber {
      * @param z1 A Complex Number instance.
      * @return Returns new ComplexNumber instance containing the Sine value of the specified complex number.
      */
-    public ComplexNumber Sin(ComplexNumber z1){
+    public static ComplexNumber Sin(ComplexNumber z1){
         ComplexNumber result = new ComplexNumber();
 
         if ( z1.imaginary == 0.0 )
@@ -250,7 +250,7 @@ public class ComplexNumber {
      * @param z1 A ComplexNumber instance.
      * @return Returns new ComplexNumber instance containing the Cosine value of the specified complex number.
      */
-    public ComplexNumber Cos(ComplexNumber z1){
+    public static ComplexNumber Cos(ComplexNumber z1){
         ComplexNumber result = new ComplexNumber();
 
         if ( z1.imaginary == 0.0 )
@@ -272,7 +272,7 @@ public class ComplexNumber {
      * @param z1 A ComplexNumber instance.
      * @return Returns new ComplexNumber instance containing the Tangent value of the specified complex number.
      */
-    public ComplexNumber Tan(ComplexNumber z1){
+    public static ComplexNumber Tan(ComplexNumber z1){
         ComplexNumber result = new ComplexNumber();
 
         if ( z1.imaginary == 0.0 )
@@ -305,7 +305,7 @@ public class ComplexNumber {
      * @param z1 Complex number.
      * @return Returns new ComplexNumber instance containing the conjugate of the specified complex number.
      */
-    public ComplexNumber Conjugate(ComplexNumber z1){
+    public static ComplexNumber Conjugate(ComplexNumber z1){
         return new ComplexNumber(z1.real, z1.imaginary * - 1);
     }
 

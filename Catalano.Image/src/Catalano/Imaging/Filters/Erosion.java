@@ -23,7 +23,6 @@ package Catalano.Imaging.Filters;
 
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.IBaseInPlace;
-import Catalano.Math.Matrix;
 
 /**
  * Erosion operator from Mathematical Morphology.
@@ -38,7 +37,6 @@ public class Erosion implements IBaseInPlace{
     
     private int radius = 0;
     private int[][] kernel;
-    private int[][] mask;
 
     /**
      * Initialize a new instance of the Erosion class.
@@ -72,26 +70,27 @@ public class Erosion implements IBaseInPlace{
         if (fastBitmap.isGrayscale()){
             if (kernel == null)
                 createKernel(radius);
-            this.mask = createMask(radius);
             
+            int min;
             FastBitmap copy = new FastBitmap(fastBitmap);
-            for (int i = 1; i < height; i++) {
-                for (int j = 1; j < width; j++) {
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
                     
                     int X = 0,Y;
+                    min = 255;
                     for (int x = i - radius; x < i + radius + 1; x++) {
                         Y = 0;
                         for (int y = j - radius; y < j + radius + 1; y++) {
-                            
                             if (x >= 0 && x < height && y >= 0 && y < width){
-                                mask[X][Y] = copy.getGray(x, y) - kernel[X][Y];
+                                int val = copy.getGray(x, y) - kernel[X][Y];
+                                if (val < min)
+                                    min = val;
                             }
                             Y++;
                         }
                         X++;
                     }
-                    int min = Matrix.Min(mask);
-                    min = min <  0 ? 0 : min;
+                    min = min < 0 ? 0 : min;
                     fastBitmap.setGray(i, j, min);
                 }
             }
@@ -99,37 +98,43 @@ public class Erosion implements IBaseInPlace{
         if (fastBitmap.isRGB()){
             if (kernel == null)
                 createKernel(radius);
-            int[][] redMask = createMask(radius);
-            int[][] greenMask = createMask(radius);
-            int[][] blueMask = createMask(radius);
             
+            int minR, minG, minB;
             FastBitmap copy = new FastBitmap(fastBitmap);
-            for (int i = 1; i < height; i++) {
-                for (int j = 1; j < width; j++) {
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
                     
                     int X = 0,Y;
+                    minR = minG = minB = 255;
+                    int valR, valG, valB;
                     for (int x = i - radius; x < i + radius + 1; x++) {
                         Y = 0;
                         for (int y = j - radius; y < j + radius + 1; y++) {
                             
                             if (x >= 0 && x < height && y >= 0 && y < width){
-                                redMask[X][Y] = copy.getRed(x, y) - kernel[X][Y];
-                                greenMask[X][Y] = copy.getGreen(x, y) - kernel[X][Y];
-                                blueMask[X][Y] = copy.getBlue(x, y) - kernel[X][Y];
+                                valR = copy.getRed(x, y) - kernel[X][Y];
+                                valG = copy.getGreen(x, y) - kernel[X][Y];
+                                valB = copy.getBlue(x, y) - kernel[X][Y];
+                                
+                                if (valR < minR)
+                                    minR = valR;
+                                
+                                if (valG < minG)
+                                    minG = valG;
+                                
+                                if (valB < minB)
+                                    minB = valB;
                             }
                             Y++;
                         }
                         X++;
                     }
-                    int minRed = Matrix.Min(redMask);
-                    int minGreen = Matrix.Min(greenMask);
-                    int minBlue = Matrix.Min(blueMask);
                     
-                    minRed = minRed <  0 ? 0 : minRed;
-                    minGreen = minGreen <  0 ? 0 : minGreen;
-                    minBlue = minBlue <  0 ? 0 : minBlue;
-                    
-                    fastBitmap.setRGB(i, j, minRed, minGreen, minBlue);
+                    minR = minR <  0 ? 0 : minR;
+                    minG = minG <  0 ? 0 : minG;
+                    minB = minB <  0 ? 0 : minB;
+                                
+                    fastBitmap.setRGB(i, j, minR, minG, minB);
                 }
             }
         }
@@ -143,16 +148,5 @@ public class Erosion implements IBaseInPlace{
                 kernel[i][j] = 1;
             }
         }
-    }
-    
-    private int[][] createMask(int radius){
-        int size = radius * 2 + 1;
-        int[][] mask = new int[size][size];
-        for (int i = 0; i < mask.length; i++) {
-            for (int j = 0; j < mask[0].length; j++) {
-                mask[i][j] = 0;
-            }
-        }
-        return mask;
     }
 }

@@ -80,24 +80,21 @@ public final class Gabor {
      * 2-D Complex Gabor function.
      * @param x X axis coordinate.
      * @param y Y axis coordinate.
-     * @param lambda Wavelength.
-     * @param theta Orientation.
-     * @param phi Phase offset.
-     * @param sigma Gaussian variance.
-     * @param gamma Aspect ratio.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
+     * @param gaussVariance Gaussian variance.
+     * @param aspectRatio Aspect ratio.
      * @return Gabor response.
      */
-    public static ComplexNumber Function2D(int x, int y, double lambda, double theta, double phi, double sigma, double gamma){
+    public static ComplexNumber Function2D(int x, int y, double wavelength, double orientation, double phaseOffset, double gaussVariance, double aspectRatio){
         
-        double X = x * Math.cos(theta) + y * Math.sin(theta);
-        double Y = -x * Math.sin(theta) + y * Math.cos(theta);
+        double X = x * Math.cos(orientation) + y * Math.sin(orientation);
+        double Y = -x * Math.sin(orientation) + y * Math.cos(orientation);
         
-        if (X == 0) X = 1;
-        if (Y == 0) Y = 1;
-        
-        double envelope = Math.exp(- ((X*X + gamma*gamma*Y*Y) / (2 * sigma*sigma)));
-        double real = Math.cos(2 * Math.PI * (X / lambda) + phi);
-        double imaginary = Math.sin(2 * Math.PI * (X / lambda) + phi);
+        double envelope = Math.exp(- ((X*X + aspectRatio*aspectRatio*Y*Y) / (2 * gaussVariance*gaussVariance)));
+        double real = Math.cos(2 * Math.PI * (X / wavelength) + phaseOffset);
+        double imaginary = Math.sin(2 * Math.PI * (X / wavelength) + phaseOffset);
         
         return new ComplexNumber(envelope * real, envelope * imaginary);
     }
@@ -107,23 +104,20 @@ public final class Gabor {
      * Compute only real part.
      * @param x X axis coordinate.
      * @param y Y axis coordinate.
-     * @param lambda Wavelength.
-     * @param theta Orientation.
-     * @param phi Phase offset.
-     * @param sigma Gaussian variance.
-     * @param gamma Aspect ratio.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
+     * @param gaussVariance Gaussian variance.
+     * @param aspectRatio Aspect ratio.
      * @return Gabor response.
      */
-    public static double RealFunction2D(int x, int y, double lambda, double theta, double phi, double sigma, double gamma){
+    public static double RealFunction2D(int x, int y, double wavelength, double orientation, double phaseOffset, double gaussVariance, double aspectRatio){
         
-        double X = x * Math.cos(theta) + y * Math.sin(theta);
-        double Y = -x * Math.sin(theta) + y * Math.cos(theta);
+        double X = x * Math.cos(orientation) + y * Math.sin(orientation);
+        double Y = -x * Math.sin(orientation) + y * Math.cos(orientation);
         
-        if (X == 0) X = 1;
-        if (Y == 0) Y = 1;
-        
-        double envelope = Math.exp(- ((X*X + gamma*gamma*Y*Y) / (2 * sigma*sigma)));
-        double carrier = Math.cos(2 * Math.PI * (X / lambda) + phi);
+        double envelope = Math.exp(- ((X*X + aspectRatio*aspectRatio*Y*Y) / (2 * gaussVariance*gaussVariance)));
+        double carrier = Math.cos(2 * Math.PI * (X / wavelength) + phaseOffset);
         
         return envelope * carrier;
     }
@@ -133,23 +127,20 @@ public final class Gabor {
      * Compute only imaginary part.
      * @param x X axis coordinate.
      * @param y Y axis coordinate.
-     * @param lambda Wavelength.
-     * @param theta Orientation.
-     * @param phi Phase offset.
-     * @param sigma Gaussian variance.
-     * @param gamma Aspect ratio.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
+     * @param gaussVariance Gaussian variance.
+     * @param aspectRatio Aspect ratio.
      * @return Gabor response.
      */
-    public static double ImaginaryFunction2D(int x, int y, double lambda, double theta, double phi, double sigma, double gamma){
+    public static double ImaginaryFunction2D(int x, int y, double wavelength, double orientation, double phaseOffset, double gaussVariance, double aspectRatio){
         
-        double X = x * Math.cos(theta) + y * Math.sin(theta);
-        double Y = -x * Math.sin(theta) + y * Math.cos(theta);
+        double X = x * Math.cos(orientation) + y * Math.sin(orientation);
+        double Y = -x * Math.sin(orientation) + y * Math.cos(orientation);
         
-        if (X == 0) X = 1;
-        if (Y == 0) Y = 1;
-        
-        double envelope = Math.exp(- ((X*X + gamma*gamma*Y*Y) / (2 * sigma*sigma)));
-        double carrier = Math.sin(2 * Math.PI * (X / lambda) + phi);
+        double envelope = Math.exp(- ((X*X + aspectRatio*aspectRatio*Y*Y) / (2 * gaussVariance*gaussVariance)));
+        double carrier = Math.sin(2 * Math.PI * (X / wavelength) + phaseOffset);
         
         return envelope * carrier;
     }
@@ -157,26 +148,26 @@ public final class Gabor {
     /**
      * 2-D Gabor kernel.
      * @param size Kernel size (should be odd).
-     * @param lambda Wavelength.
-     * @param theta Orientation.
-     * @param phi Phase offset.
-     * @param sigma Gaussian variance.
-     * @param gamma Aspect ratio.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
+     * @param gaussVariance Gaussian variance.
+     * @param aspectRatio Aspect ratio.
      * @return Gabor kernel.
      */
-    public static double[][] Kernel2D(int size, double lambda, double theta, double phi, double sigma, double gamma){
-        double sigmaX = sigma;
-        double sigmaY = sigma / gamma;
+    public static double[][] Kernel2D(int size, double wavelength, double orientation, double phaseOffset, double gaussVariance, double aspectRatio){
+        double sigmaX = gaussVariance;
+        double sigmaY = gaussVariance / aspectRatio;
 
-        int xMax = (int)Math.ceil(Math.max(1,Math.max(Math.abs(size * sigmaX * Math.cos(theta)), Math.abs(size * sigmaY * Math.sin(theta)))));
-        int yMax = (int)Math.ceil(Math.max(1,Math.max(Math.abs(size * sigmaX * Math.sin(theta)), Math.abs(size * sigmaY * Math.cos(theta)))));
+        int xMax = (int)Math.ceil(Math.max(1,Math.max(Math.abs(size * sigmaX * Math.cos(orientation)), Math.abs(size * sigmaY * Math.sin(orientation)))));
+        int yMax = (int)Math.ceil(Math.max(1,Math.max(Math.abs(size * sigmaX * Math.sin(orientation)), Math.abs(size * sigmaY * Math.cos(orientation)))));
 
         double[][] kernel = new double[2 * xMax + 1][2 * yMax + 1];
 
         double sum=0;
         for (int x = -xMax;x <= xMax; x++){
             for (int y = -yMax;y <= yMax; y++){
-                kernel[x + xMax][y + yMax] = Gabor.ImaginaryFunction2D(x, y, lambda, theta, phi, sigma, gamma);
+                kernel[x + xMax][y + yMax] = Gabor.ImaginaryFunction2D(x, y, wavelength, orientation, phaseOffset, gaussVariance, aspectRatio);
                 sum += kernel[x + xMax][y + yMax];
             }
         }
@@ -191,20 +182,20 @@ public final class Gabor {
     /**
      * 2-D Gabor kernel.
      * @param size Kernel size (should be odd).
-     * @param lambda Wavelength.
-     * @param theta Orientation.
-     * @param phi Phase offset.
-     * @param sigma Gaussian variance.
-     * @param gamma Aspect ratio.
+     * @param wavelength Wavelength.
+     * @param orientation Orientation.
+     * @param phaseOffset Phase offset.
+     * @param gaussVariance Gaussian variance.
+     * @param aspectRatio Aspect ratio.
      * @param config Gabor configuration.
      * @return Gabor kernel.
      */
-    public static double[][] Kernel2D(int size, double lambda, double theta, double phi, double sigma, double gamma, Config config){
-        double sigmaX = sigma;
-        double sigmaY = sigma / gamma;
+    public static double[][] Kernel2D(int size, double wavelength, double orientation, double phaseOffset, double gaussVariance, double aspectRatio, Config config){
+        double sigmaX = gaussVariance;
+        double sigmaY = gaussVariance / aspectRatio;
 
-        int xMax = (int)Math.ceil(Math.max(1,Math.max(Math.abs(size * sigmaX * Math.cos(theta)), Math.abs(size * sigmaY * Math.sin(theta)))));
-        int yMax = (int)Math.ceil(Math.max(1,Math.max(Math.abs(size * sigmaX * Math.sin(theta)), Math.abs(size * sigmaY * Math.cos(theta)))));
+        int xMax = (int)Math.ceil(Math.max(1,Math.max(Math.abs(size * sigmaX * Math.cos(orientation)), Math.abs(size * sigmaY * Math.sin(orientation)))));
+        int yMax = (int)Math.ceil(Math.max(1,Math.max(Math.abs(size * sigmaX * Math.sin(orientation)), Math.abs(size * sigmaY * Math.cos(orientation)))));
 
         double[][] kernel = new double[2 * xMax + 1][2 * yMax + 1];
 
@@ -214,7 +205,7 @@ public final class Gabor {
             case Real:
                 for (int x = -xMax;x <= xMax; x++){
                     for (int y = -yMax;y <= yMax; y++){
-                        kernel[x + xMax][y + yMax] = Gabor.RealFunction2D(x, y, lambda, theta, phi, sigma, gamma);
+                        kernel[x + xMax][y + yMax] = Gabor.RealFunction2D(x, y, wavelength, orientation, phaseOffset, gaussVariance, aspectRatio);
                         sum += kernel[x + xMax][y + yMax];
                     }
                 }
@@ -222,7 +213,7 @@ public final class Gabor {
             case Imaginary:
                 for (int x = -xMax;x <= xMax; x++){
                     for (int y = -yMax;y <= yMax; y++){
-                        kernel[x + xMax][y + yMax] = Gabor.ImaginaryFunction2D(x, y, lambda, theta, phi, sigma, gamma);
+                        kernel[x + xMax][y + yMax] = Gabor.ImaginaryFunction2D(x, y, wavelength, orientation, phaseOffset, gaussVariance, aspectRatio);
                         sum += kernel[x + xMax][y + yMax];
                     }
                 }
@@ -230,7 +221,7 @@ public final class Gabor {
             case Magnitude:
                 for (int x = -xMax;x <= xMax; x++){
                     for (int y = -yMax;y <= yMax; y++){
-                        ComplexNumber c = Gabor.Function2D(x, y, lambda, theta, phi, sigma, gamma);
+                        ComplexNumber c = Gabor.Function2D(x, y, wavelength, orientation, phaseOffset, gaussVariance, aspectRatio);
                         kernel[x + xMax][y + yMax] = c.getMagnitude();
                         sum += kernel[x + xMax][y + yMax];
                     }
@@ -239,7 +230,7 @@ public final class Gabor {
             case SquaredMagnitude:
                 for (int x = -xMax;x <= xMax; x++){
                     for (int y = -yMax;y <= yMax; y++){
-                        ComplexNumber c = Gabor.Function2D(x, y, lambda, theta, phi, sigma, gamma);
+                        ComplexNumber c = Gabor.Function2D(x, y, wavelength, orientation, phaseOffset, gaussVariance, aspectRatio);
                         kernel[x + xMax][y + yMax] = c.getSquaredMagnitude();
                         sum += kernel[x + xMax][y + yMax];
                     }

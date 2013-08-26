@@ -132,5 +132,4 @@ public final class ImageMoments {
             double m00gama = Math.pow(ImageMoments.getCentralMoment(0, 0, image), gama);
             return mpq / m00gama;
     }
-    
 }

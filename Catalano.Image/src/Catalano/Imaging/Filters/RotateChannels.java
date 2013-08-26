@@ -41,20 +41,26 @@ public class RotateChannels implements IBaseInPlace{
     
     @Override
     public void applyInPlace(FastBitmap fastBitmap){
-        int width = fastBitmap.getWidth();
-        int height = fastBitmap.getHeight();
         
-        int r,g,b,z;
-        for (int x = 0; x < height; x++) {
-            for (int y = 0; y < width; y++) {
-                r = fastBitmap.getRed(x, y); //red
-                g = fastBitmap.getGreen(x, y); //green
-                b = fastBitmap.getBlue(x, y); //blue
-                
-                z = g; //green
-                
-                fastBitmap.setRGB(x, y, z, b, r);
+        if (fastBitmap.isRGB()){
+            int width = fastBitmap.getWidth();
+            int height = fastBitmap.getHeight();
+
+            int r,g,b,z;
+            for (int x = 0; x < height; x++) {
+                for (int y = 0; y < width; y++) {
+                    r = fastBitmap.getRed(x, y); //red
+                    g = fastBitmap.getGreen(x, y); //green
+                    b = fastBitmap.getBlue(x, y); //blue
+
+                    z = g; //green
+
+                    fastBitmap.setRGB(x, y, z, b, r);
+                }
             }
+        }
+        else{
+            throw new IllegalArgumentException("RotateChannels only works in RGB imagens.");
         }
     }
 }
